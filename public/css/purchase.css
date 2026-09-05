@@ -1,0 +1,428 @@
+.purchase-table-section {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* Cards */
+
+.purchase-stat-card {
+    background: #ffffff;
+    padding: 20px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.purchase-stat-card h6 {
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.purchase-stat-card h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* Table */
+
+.purchase-table {
+    width: 100%;
+}
+
+
+.purchase-table thead {
+    background: #f8f9fa;
+}
+
+
+.purchase-table th {
+    padding: 16px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.purchase-table td {
+    padding: 17px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #374151;
+}
+
+.purchase-table th:last-child,
+.purchase-table td:last-child {
+    white-space: nowrap;
+}
+
+/* .purchase-invoice,
+.purchase-amount,
+.purchase-status {
+    white-space: nowrap;
+} */
+
+.purchase-table td:nth-child(3) {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* Remove border from last row */
+
+.purchase-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* Hover */
+
+.purchase-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+
+.purchase-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+
+/* Invoice */
+
+.purchase-invoice {
+    font-weight: 600;
+    color: #2563eb;
+}
+
+
+/* Supplier */
+
+.supplier-name {
+    font-weight: 500;
+    color: #374151;
+}
+
+
+/* Date */
+
+.purchase-date {
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+
+/* Amount */
+
+.purchase-amount {
+    font-weight: 600;
+    color: #111827;
+    white-space: nowrap;
+}
+
+
+/* Status */
+
+.purchase-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.status-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+
+.status-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Action */
+
+.purchase-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+.purchase-actions .btn {
+    min-width: 60px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .purchase-table-section {
+        border-radius: 10px;
+    }
+
+    .purchase-table th,
+    .purchase-table td {
+        padding: 14px 16px;
+    }
+
+}
+
+/* Purchase Details Page */
+
+.purchase-info-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.purchase-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eef0f2;
+}
+
+.purchase-info-header h2 {
+    margin: 4px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.purchase-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.purchase-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    padding-top: 20px;
+}
+
+.purchase-info-grid strong {
+    color: #111827;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Purchase items table */
+
+.purchase-items-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.purchase-items-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #eef0f2;
+}
+
+.purchase-items-header h2 {
+    margin: 0 0 4px;
+    font-size: 19px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.purchase-items-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* Table */
+
+.purchase-details-table {
+    min-width: 650px;
+}
+
+.purchase-details-table thead th {
+    background: #f8fafc;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.purchase-details-table tbody td {
+    padding: 18px 20px;
+    color: #4b5563;
+    font-size: 15px;
+    border-bottom: 1px solid #f0f1f3;
+    white-space: nowrap;
+}
+
+.purchase-details-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.purchase-details-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.purchase-details-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+
+/* Product name */
+
+.purchase-details-table tbody td:first-child {
+    color: #111827;
+    font-weight: 600;
+}
+
+
+/* Quantity */
+
+.purchase-details-table tbody td:nth-child(2) {
+    font-weight: 600;
+    color: #111827;
+}
+
+
+/* Prices */
+
+.purchase-details-table tbody td:nth-child(3),
+.purchase-details-table tbody td:nth-child(4) {
+    font-weight: 600;
+    color: #374151;
+}
+
+
+   /* PURCHASE TOTAL */
+
+.purchase-total {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 40px;
+
+    padding: 20px 24px;
+
+    border-top: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+
+.purchase-total span {
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.purchase-total strong {
+    color: #111827;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+/* Mobile responsive */
+
+@media (max-width: 768px) {
+
+    .purchase-details-page {
+        width: 100%;
+    }
+
+    /* Page Header */
+
+    .purchase-details-header {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .purchase-details-header h1 {
+        font-size: 23px;
+    }
+
+    .purchase-details-header p {
+        font-size: 14px;
+    }
+
+    .purchase-details-header .btn {
+        width: 100%;
+    }
+
+
+    /* Purchase Information */
+
+    .purchase-info-card {
+        padding: 18px;
+        margin-bottom: 20px;
+    }
+
+    .purchase-info-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .purchase-info-header h2 {
+        font-size: 20px;
+    }
+
+    .purchase-info-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+
+    /* Purchased Items */
+
+    .purchase-items-header {
+        padding: 18px;
+    }
+
+    .purchase-items-header h2 {
+        font-size: 18px;
+    }
+
+    .purchase-details-table thead th,
+    .purchase-details-table tbody td {
+        padding: 14px 16px;
+    }
+
+
+    /* Total */
+
+    .purchase-total {
+        justify-content: space-between;
+        gap: 15px;
+        padding: 18px;
+    }
+
+    .purchase-total strong {
+        font-size: 18px;
+    }
+
+}
