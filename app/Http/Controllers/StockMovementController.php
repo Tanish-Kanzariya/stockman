@@ -2,9 +2,45 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\StockMovement;
+use Illuminate\Http\Request;
 
 class StockMovementController extends Controller
 {
-    //
+    public function index(Request $request){
+        $query = StockMovement::with('product','purchase');
+
+        // Product filter
+
+        if($request->filled('product_id')){
+            $query->where('product_id',$request->product_id);
+        }
+
+        //Movement Type Filter
+
+        if($request->filled('type')){
+            $query->where('type', $request->type);
+        }
+
+        //Date From Filter
+        
+        if($request->filled('date_from')){
+            $query->whereDate('created_at', '>=', $request->date_from );
+        }
+
+        // Date To Filter
+
+        if($request->filled('date_to')){
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        $stockMovements = $query->latest('id')
+        ->paginate(10)->withQueryString();
+
+        $products = Product::orderBy('name')->get();
+
+        return view('stockmovements.index',
+        compact('stockMovements','products'));
+    }
 }

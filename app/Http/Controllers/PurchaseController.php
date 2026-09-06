@@ -96,7 +96,7 @@ class PurchaseController extends Controller
                 'type' => 'purchase_cancel',
                 'quantity' => -$item->quantity,
                 'reference_id' => $purchase->id,
-                'note' => 'Purchase'.$purchase->invoice_number.'cancelled'
+                'note' => 'Purchase Cancelled'
             ]);
 
             $latestPurchaseItem = Purchase_item::where('product_id',$item->product_id)
