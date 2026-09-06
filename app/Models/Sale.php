@@ -10,13 +10,19 @@ class Sale extends Model
         'invoice_number',
         'user_id',
         'customer_name',
+        'phone_number',
         'subtotal',
         'discount',
         'tax',
         'total_amount',
-        'payment_method'
+        'payment_method',
+        'status'
     ];
     public function sale_items(){
         return $this->hasMany(Sale_item::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

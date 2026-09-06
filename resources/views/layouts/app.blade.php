@@ -51,7 +51,7 @@
             </li>
 
             <li>
-                <a href="">New Sale</a>
+                <a href="{{ route('sales.create') }}">New Sale</a>
             </li>
 
             <li>

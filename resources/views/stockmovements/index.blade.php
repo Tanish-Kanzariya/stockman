@@ -21,6 +21,74 @@
             </div>
         </div>
 
+        {{-- Summary cards --}}
+        <div class="stock-summary-grid">
+
+            {{-- Total movements --}}
+            <div class="stock-summary-card">
+                <div class="stock-summary-content">
+                    <p class="stock-summary-label">
+                        Total Movements
+                    </p>
+
+                    <h3>{{ $totalMovements }}</h3>
+
+                    <span class="stock-summary-text">All inventory updates</span>
+                </div>
+            </div>
+
+            {{-- Stock Added --}}
+            <div class="stock-summary-card">
+                <div class="stock-summary-content">
+                    <p class="stock-summary-label">
+                        Stock Added
+                    </p>
+
+                    <h3 class="stock-added">
+                        +{{ $stockAdded }}
+                    </h3>
+
+                    <span class="stock-summary-text">
+                        Total inventory added
+                    </span>
+                </div>
+            </div>
+
+            {{-- Stock Reduced --}}
+
+            <div class="stock-summary-card">
+                <div class="stock-summary-content">
+                    <p class="stock-summary-label">
+                        Stock Reduced
+                    </p>
+
+                    <h3 class="stock-reduced">
+                        -{{ abs($stockReduced) }}
+                    </h3>
+
+                    <p class="stock-summary-text">
+                        Total inventory removed
+                    </p>
+                </div>
+            </div>
+
+            {{-- Todays Movement --}}
+
+            <div class="stock-summary-card">
+                <div class="stock-summary-content">
+                    <p class="stock-summary-label">
+                        Today's Movements
+                    </p>
+
+                    <h3>{{ $todaysMovement }}</h3>
+
+                    <span class="stock-summary-text">
+                        Inventory updates today
+                    </span>
+                </div>
+            </div>
+        </div>
+
         {{-- Filters --}}
         <div class="stock-filter-card py-4">
             <div class="filter-header">

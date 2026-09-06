@@ -5,6 +5,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\SaleController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -54,3 +55,8 @@ Route::POST('/supplier/update/{id}', [SupplierController::class, 'update'])->nam
 Route::POST('/supplier/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
 
 Route::get('/stock-movements/', [StockMovementController::class,'index'])->name('stockMovements');
+
+
+Route::get('/sales/create/', [SaleController::class, 'create'])->name('sales.create');
+
+Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.searchProducts');

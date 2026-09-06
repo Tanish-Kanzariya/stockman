@@ -40,7 +40,20 @@ class StockMovementController extends Controller
 
         $products = Product::orderBy('name')->get();
 
+        $totalMovements = StockMovement::count();
+
+        $stockAdded = StockMovement::where('quantity', '>', 0)->sum('quantity');
+
+        $stockReduced = StockMovement::where('quantity', '<', 0)->sum('quantity');
+
+        $todaysMovement = StockMovement::whereDate('created_at', today())->count();
+
         return view('stockmovements.index',
-        compact('stockMovements','products'));
+        compact('stockMovements',
+        'products',
+        'totalMovements',
+        'stockAdded',
+        'stockReduced',
+        'todaysMovement'));
     }
 }
