@@ -323,7 +323,7 @@
 
         // Add product row in the table
 
-        saleItemsBody.innerHTML += `
+        saleItemsBody.insertAdjacentHTML('beforeend', `
             <tr data-product-id="${product.id}"
                 data-price="${product.price}"
                 data-stock="${product.stock}"    
@@ -352,7 +352,9 @@
                     </button>
                 </td>
             </tr>
-        `;
+
+        `); 
+      
 
         updateSaleSummary();
 
@@ -375,7 +377,7 @@
 
         const stock = parseInt(row.dataset.stock);
 
-        const quantity = parseInt(quantityInput.value);
+        let quantity = parseInt(quantityInput.value);
 
         if(isNaN(quantity) || quantity<1){
             quantity = 1;
@@ -391,6 +393,10 @@
 
         row.querySelector('.item-subtotal').textContent = `₹${subtotal.toFixed(2)}`;
 
+        //Update this row subtotal
+        updateRowSubtotal(row);
+
+        //Update complete sale summary
         updateSaleSummary();
     });
 
@@ -412,7 +418,7 @@
         }
         row.remove();
 
-        if(saleItemsBody.querySelectorAll('tr').length === 0){
+        if(saleItemsBody.querySelectorAll('tr[data-product-id]').length === 0){
             saleItemsBody.innerHTML = `
                 <tr id="emptySaleRow">
                     <td colspan="5" class="text-center py-5">
@@ -429,7 +435,11 @@
                     </td>
                 </tr>
             `;
+
+            discountInput.value = 0;
+            taxInput.value = 0;
             updateSaleSummary();
+
         }
     });
 
@@ -472,6 +482,18 @@
         subTotalAmount.textContent = `₹${subtotal.toFixed(2)}`;
 
         totalAmount.textContent = `₹${total.toFixed(2)}`;
+    }
+
+    function updateRowSubtotal(row){
+        const price = parseFloat(row.dataset.price);
+
+        const quantityInput = row.querySelector('.quantity-input');
+
+        const quantity = parseInt(quantityInput.value) || 0;
+
+        const subtotal = price * quantity;
+
+        row.querySelector('.item-subtotal').textContent = `₹${subtotal.toFixed(2)}`;
     }
 
     discountInput.addEventListener('input', updateSaleSummary);
