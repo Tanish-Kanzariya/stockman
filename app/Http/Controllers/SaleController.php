@@ -72,10 +72,16 @@ class SaleController extends Controller
 
             $saleSubtotal = 0;
 
-            foreach($request->items as $item){
+            foreach($validated['items'] as $item){
                 $product = Product::findOrFail($item['product_id']);
 
                 $quantity = $item['quantity'];
+
+                if($product->stock_quantity < $quantity){
+                        throw new \Exception(
+                            "Insufficient stock for product: ".$product->name
+                    );
+                }
 
                 $price = $product->selling_price;
 
@@ -169,5 +175,11 @@ class SaleController extends Controller
                     ]);
 
                     return response()->json($products);
+    }
+
+    public function invoice(Sale $sale){
+        $sale->load('sale_items.product');
+
+        return view('sales.invoice', compact('sale'));
     }
 }

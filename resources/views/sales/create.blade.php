@@ -565,13 +565,17 @@
             body : JSON.stringify(saleData)
         })
         .then(response => {
-                if(!response){
+                if(!response.ok){
                     throw new Error('Failed to complete sale');
                 }
                 return response.json();
         })
         .then(data =>{
-            console.log(data);
+            if(data.success){
+                window.location.href= `
+                /sales/${data.sale_id}/invoice
+                `;
+            }
 
             //Reseting the form after success
             resetSaleForm();

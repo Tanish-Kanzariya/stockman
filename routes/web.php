@@ -62,3 +62,5 @@ Route::get('/sales/create/', [SaleController::class, 'create'])->name('sales.cre
 Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.searchProducts');
 
 Route::POST('/sales',[SaleController::class,'store'])->name('sales.store');
+
+Route::get('/sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
