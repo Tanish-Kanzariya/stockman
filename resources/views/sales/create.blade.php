@@ -190,7 +190,7 @@
 
                     {{-- Complete Sale --}}
                     <button type="button" id="completeSaleBtn"
-                    class="btn btn-primary w-100 mt-4">
+                    class="btn btn-primary w-100 mt-4" disabled>
                         Complete Sale
                     </button>
                 </div>
@@ -213,6 +213,14 @@
     const taxInput = document.getElementById('tax');
 
     const totalAmount = document.getElementById('totalAmount');
+
+    const paymentMethod = document.getElementById('paymentMethod');
+
+    const completeSaleBtn = document.getElementById('completeSaleBtn');
+
+    const customerName = document.getElementById('customerName');
+
+    const phone_number = document.getElementById('customerPhone');
 
     // Fetching data from server
     productSearch.addEventListener('input',(e)=>{
@@ -357,6 +365,7 @@
       
 
         updateSaleSummary();
+        checkSaleForm();
 
         productSearch.value = '';
 
@@ -436,11 +445,12 @@
                 </tr>
             `;
 
-            discountInput.value = 0;
+             discountInput.value = 0;
             taxInput.value = 0;
-            updateSaleSummary();
-
         }
+       
+            updateSaleSummary();
+            checkSaleForm();
     });
 
     // Function to calculate summary subtotal and totals
@@ -496,6 +506,116 @@
         row.querySelector('.item-subtotal').textContent = `₹${subtotal.toFixed(2)}`;
     }
 
+    // To restrict sale when no sale items exists and payment method is not done
+
+    function checkSaleForm(){
+        const products = saleItemsBody.querySelectorAll('tr[data-product-id]');
+
+        const payment = paymentMethod.value;
+
+        if(products.length > 0 && payment !== ''){
+            completeSaleBtn.disabled = false;
+        }else{
+            completeSaleBtn.disabled = true;
+        }
+    }
+
+    //Complete sale button code
+
+    completeSaleBtn.addEventListener('click', ()=>{
+        const rows = saleItemsBody.querySelectorAll('tr[data-product-id]');
+
+        const items = [];
+
+        rows.forEach(row=>{
+            const productId = row.dataset.productId;
+
+            const quantity = parseInt(row.querySelector('.quantity-input').value);
+
+            items.push({
+                product_id : productId,
+                quantity : quantity
+            });
+        })
+
+        // console.log(items);
+        const saleData = {
+            customer_name : customerName.value.trim(),
+
+            phone_number : phone_number.value.trim(),
+
+            discount : parseFloat(discountInput.value) || 0,
+
+            tax : parseFloat(taxInput.value) || 0,
+
+            payment_method : paymentMethod.value,
+
+            items : items
+        }
+
+        fetch('/sales',{
+            method: 'POST',
+            headers:{
+                'content-Type':'application/json',
+                'Accept' : 'application/json',
+
+                'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content')
+            },
+            body : JSON.stringify(saleData)
+        })
+        .then(response => {
+                if(!response){
+                    throw new Error('Failed to complete sale');
+                }
+                return response.json();
+        })
+        .then(data =>{
+            console.log(data);
+
+            //Reseting the form after success
+            resetSaleForm();
+        })
+        .catch(error=>{
+            console.log('Sale error', error);
+        });
+    });
+
+    //Reset after sale
+    function resetSaleForm(){
+            saleItemsBody.innerHTML = `
+                <tr id="emptySaleRow">
+                    <td colspan="5" class="text-center py-5">
+                        <div class="empty-sale-state">
+                            <div class="empty-sale-icon">
+                                🛒
+                            </div>
+                            <h6>No products added yet.</h6>
+
+                            <p class="text-muted">
+                                Search and select products to add them to this sale.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            //Reset discount
+            discountInput.value = 0;
+
+            //Reset tax
+            taxInput.value = 0;
+
+            //Reset payment method 
+            paymentMethod.value = '';
+
+            productSearch.value = '';
+            productSearchResults.innerHTML = '';
+
+            updateSaleSummary();
+            checkSaleForm();
+    }
+    paymentMethod.addEventListener('change', checkSaleForm);
     discountInput.addEventListener('input', updateSaleSummary);
     taxInput.addEventListener('input', updateSaleSummary);
 </script>

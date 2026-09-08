@@ -60,3 +60,5 @@ Route::get('/stock-movements/', [StockMovementController::class,'index'])->name(
 Route::get('/sales/create/', [SaleController::class, 'create'])->name('sales.create');
 
 Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.searchProducts');
+
+Route::POST('/sales',[SaleController::class,'store'])->name('sales.store');
