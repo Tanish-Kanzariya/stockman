@@ -57,6 +57,8 @@ Route::POST('/supplier/delete/{id}', [SupplierController::class, 'delete'])->nam
 Route::get('/stock-movements/', [StockMovementController::class,'index'])->name('stockMovements');
 
 
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+
 Route::get('/sales/create/', [SaleController::class, 'create'])->name('sales.create');
 
 Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.searchProducts');
@@ -64,3 +66,5 @@ Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])-
 Route::POST('/sales',[SaleController::class,'store'])->name('sales.store');
 
 Route::get('/sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
+
+Route::post('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');

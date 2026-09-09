@@ -11,6 +11,58 @@ use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
+
+    public function index(Request $request){
+
+        $query = Sale::with('sale_items.product');
+
+        //Search by invoice, customer name and phone number
+        if($request->filled('search')){
+            $search = $request->search;
+            $query->where(function($q) use ($search){
+                $q->where('customer_name', 'like', "%{$search}%")
+                ->orWhere('phone_number', 'like', "%{$search}%")
+                ->orWhere('invoice_number', 'like', "%{$search}%");
+            });
+        }
+
+        // Payment method filter
+        if($request->filled('payment_method')){
+            $query->where('payment_method', $request->payment_method);
+        }
+
+        //Filter by status
+        if($request->filled('status')){
+            $query->where('status', $request->status);
+        }
+
+        //Filter by date
+        if($request->filled('date')){
+            $query->whereDate('created_at', $request->date);
+        }
+
+        //Summary cards 
+
+        $totalSales = Sale::where('status', 'completed')->count();
+
+        $totalRevenue = Sale::where('status', 'completed')->sum('total_amount');
+
+        $todaysSales = Sale::where('status', 'completed')
+                        ->whereDate('created_at', today())
+                        ->count();
+        
+        $cancelledSales = Sale::where('status', 'cancelled')->count();
+
+        $sales = $query->latest()->paginate(10)->withQueryString()->fragment('saleCardBody');
+
+        return view('sales.index',compact('sales',
+                                            'totalSales',
+                                            'totalRevenue',
+                                            'todaysSales',
+                                            'cancelledSales'
+        ));
+    }
+
     public function create(){
         return view('sales.create');
     }
@@ -181,5 +233,42 @@ class SaleController extends Controller
         $sale->load('sale_items.product');
 
         return view('sales.invoice', compact('sale'));
+    }
+
+    public function cancel(Sale $sale){
+        if($sale->status === 'cancelled'){
+            return redirect()->route('sales.index')
+            ->with('error', 'This sale has already been deleted');
+        }
+
+        DB::transaction(function () use ($sale){
+
+            //Loading sale items with products
+
+            $sale->load('sale_items.product');
+
+            foreach($sale->sale_items as $item){
+                $product = $item->product;
+
+                $product->increment('stock_quantity', $item->quantity);
+
+                StockMovement::create([
+                    'product_id' => $product->id,
+
+                    'type' => 'sale_cancel',
+
+                    'quantity' => $item->quantity,
+
+                    'reference_id' => $sale->id,
+
+                    'note' => 'Stock cancelled '. $sale->invoice_number
+                ]);
+            }
+            $sale->update([
+                'status' => 'cancelled'
+            ]);
+        });
+
+        return redirect()->route('sales.index')->with('success', 'Sale cancelled successfully');
     }
 }

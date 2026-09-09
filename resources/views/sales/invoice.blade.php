@@ -82,7 +82,15 @@
                 </div>
 
                 <p class="payment-status">
-                    Completed
+                    @if($sale->status === 'completed')
+                        <span class="text-success">
+                            Completed
+                        </span>
+                    @elseif($sale->status === 'cancelled')
+                        <span class="text-danger">
+                            Cancelled
+                        </span>
+                    @endif
                 </p>
 
             </div>

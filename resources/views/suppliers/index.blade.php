@@ -186,7 +186,7 @@
                 <form action="" id="deleteSupplierForm" method="POST">
                     @csrf
 
-                    <button type="submit">
+                    <button type="submit" class="btn btn-danger">
                         Delete Supplier
                     </button>
                 </form>

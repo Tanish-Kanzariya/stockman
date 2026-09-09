@@ -56,7 +56,7 @@
             </li>
 
             <li>
-                <a href="">Sales</a>
+                <a href="{{ route('sales.index') }}">Sales</a>
             </li>
             
             <li>

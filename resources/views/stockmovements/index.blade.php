@@ -294,4 +294,6 @@
         </div>
     </div>    
 </div>
+
+{{ $stockMovements->links() }}
 @endsection
