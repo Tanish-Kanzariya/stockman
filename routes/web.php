@@ -70,3 +70,5 @@ Route::get('/sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('s
 Route::post('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
 
 Route::get('/sales/{sale}/return', [SaleController::class, 'returnForm'])->name('sales.return');
+
+Route::post('/sales/{sale}/return', [SaleController::class, 'processReturn'])->name('sales.return.process');

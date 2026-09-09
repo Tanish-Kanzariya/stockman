@@ -283,6 +283,11 @@
                                     </a>
 
                                     @if($sale->status === 'completed')  
+                                            <a href="{{ route('sales.return',$sale->id) }}"
+                                                class="btn btn-sm btn-outline-warning">
+                                                Return
+                                            </a>
+
 
                                             <button type="submit" class="btn btn-sm btn-outline-danger delete-Sale-Btn"
                                             id="deleteSaleBtn"

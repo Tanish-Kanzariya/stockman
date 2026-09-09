@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Sale_item;
+use App\Models\Sale_return;
+use App\Models\Sale_return_item;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -274,7 +276,150 @@ class SaleController extends Controller
 
     public function returnForm(Sale $sale){
         $sale->load('sale_items.product');
+        
+        foreach($sale->sale_items as $saleItem){
+
+            $returnedQuantity = Sale_return_item::where('sale_item_id', $saleItem->id)
+            ->sum('quantity');
+
+            $saleItem->returned_quantity = $returnedQuantity;
+
+            $saleItem->returnable_quantity = $saleItem->quantity - $returnedQuantity;
+        }
 
         return view('sales.return', compact('sale'));
+    }
+
+    public function processReturn(Request $request, Sale $sale){
+        $validated = $request->validate([
+            'reason' => 'nullable|string|max:1000',
+
+            'items' => 'required|array|min:1',
+
+            'items.*.sale_item_id' => 'required|exists:sale_items,id',
+
+            'items.*.quantity' => 'required|integer|min:1'
+        ]);
+
+        return DB::transaction(function () use ($validated, $sale){
+            
+            //Sale must be completed
+            if($sale->status !== 'completed'){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Only completed sales can be returned'
+                ],422);
+            }
+
+            $refundAmount = 0;
+
+            foreach($validated['items'] as $item){
+                $saleItem = Sale_item::findOrFail($item['sale_item_id']);
+
+                if($saleItem->sale_id !== $sale->id){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid sale item.'
+                    ]);
+                }
+
+                $alreadyReturned = Sale_return_item::where('sale_item_id', $saleItem->id)->sum('quantity');
+
+                $returnableQuantity = $saleItem->quantity-$alreadyReturned;
+
+                $returnQuantity = $item['quantity'];
+
+                //Prevent over return
+
+                if($returnQuantity > $returnableQuantity){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Cannot return more than {$returnableQuantity}'
+                    ]);
+                }
+
+                //Calculate refund amount
+                $subtotal = $saleItem->price * $returnQuantity;
+
+                $refundAmount += $subtotal;
+            }
+
+            $saleReturn = Sale_return::create([
+                'sale_id' => $sale->id,
+                'refund_amount' => $refundAmount,
+                'reason' => $validated['reason'] ?? null,
+                'status' => 'completed'
+            ]);
+
+            //Create sale_return_item
+
+            foreach($validated['items'] as $item){
+                $saleItem = Sale_item::findOrFail($item['sale_item_id']);
+
+                $returnQuantity = $item['quantity'];
+
+                $subtotal = $saleItem->price * $returnQuantity;
+
+                Sale_return_item::create([
+                    'sale_return_id' => $saleReturn->id,
+
+                    'sale_item_id' => $saleItem->id,
+
+                    'product_id' => $saleItem->product_id,
+
+                    'quantity' => $returnableQuantity,
+
+                    'price' => $saleItem->price,
+
+                    'subtotal' => $subtotal
+                ]);
+
+                //Restore products 
+                $product = Product::findOrFail($saleItem->product_id);
+
+                $product->increment('stock_quantity', $returnQuantity);
+
+                //Record Stock movement
+
+                StockMovement::create([
+                    'product_id' => $product->id,
+                    'type' => 'sale_return',
+                    'quantity' => $returnableQuantity,
+                    'reference_id' => $saleReturn->id,
+                    'note' => 'Stock restored due to sales return'.$sale->invoice_number
+                ]);
+            }
+
+            // Check whether the entire sale has been returned
+            $sale->load('sale_items');
+
+            $allItemsReturned = true;
+
+            foreach ($sale->sale_items as $saleItem) {
+
+                $returnedQuantity = Sale_return_item::where(
+                    'sale_item_id',
+                    $saleItem->id
+                )->sum('quantity');
+
+                if ($returnedQuantity < $saleItem->quantity) {
+                    $allItemsReturned = false;
+                    break;
+                }
+            }
+
+            if ($allItemsReturned) {
+                $sale->update([
+                    'status' => 'cancelled'
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Sale restored successfully',
+                'return_id' => $saleReturn->id,
+                'refundAmount' => $refundAmount
+            ]);
+        });
     }
 }

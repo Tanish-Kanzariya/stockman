@@ -1,0 +1,283 @@
+   /* Sales Return Deign */
+
+.sales-return-page {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+
+/* Header */
+
+.sales-return-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.sales-return-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.sales-return-header p {
+    margin: 5px 0 0;
+    color: #6b7280;
+}
+
+
+/* Sale information */
+
+.return-info-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    padding: 22px;
+    margin-bottom: 24px;
+}
+
+.return-info-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.return-info-header h4 {
+    margin: 5px 0 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.return-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+.return-customer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.return-customer strong {
+    margin-top: 4px;
+}
+
+.return-customer small {
+    color: #6b7280;
+    margin-top: 3px;
+}
+
+
+/* Items */
+
+.return-items-section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.return-section-header {
+    padding: 20px 22px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.return-section-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.return-section-header p {
+    margin: 5px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* Table */
+
+.return-items-table {
+    margin: 0;
+    min-width: 850px;
+}
+
+.return-items-table thead th {
+    background: #f8fafc;
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.return-items-table tbody td {
+    padding: 16px 18px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.return-items-table tbody tr:hover {
+    background: #fafafa;
+}
+
+
+/* Product */
+
+.return-product {
+    display: flex;
+    flex-direction: column;
+}
+
+.return-product strong {
+    font-size: 14px;
+}
+
+.return-product small {
+    color: #6b7280;
+    margin-top: 3px;
+}
+
+
+/* Badges */
+
+.returnable-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: #ecfdf5;
+    color: #047857;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.returned-badge {
+    display: inline-flex;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* Quantity input */
+
+.return-quantity {
+    width: 100px;
+    text-align: center;
+    font-weight: 600;
+}
+
+
+/* Summary */
+
+.return-summary-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.return-summary-card {
+    width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    padding: 22px;
+}
+
+.return-summary-header {
+    margin-bottom: 18px;
+}
+
+.return-summary-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.return-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.return-summary-row strong {
+    font-size: 20px;
+}
+
+
+.return-reason {
+    margin-top: 18px;
+}
+
+.return-reason label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.return-summary-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+/* Actions in Sales History */
+
+.sales-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+
+/* Responsive */
+
+@media (max-width: 767px) {
+
+    .sales-return-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .return-info-header {
+        flex-direction: column;
+    }
+
+    .return-customer {
+        align-items: flex-start;
+    }
+
+    .return-summary-section {
+        display: block;
+    }
+
+    .return-summary-card {
+        width: 100%;
+    }
+
+}
