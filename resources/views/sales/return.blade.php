@@ -420,9 +420,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         data.message +
                         '\nRefund Amount: ₹' +
                         parseFloat(
-                            data.refund_amount
+                            data.refundAmount
                         ).toFixed(2)
                     );
+
 
 
                     window.location.href =

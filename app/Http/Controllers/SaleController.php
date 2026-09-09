@@ -391,28 +391,28 @@ class SaleController extends Controller
             }
 
             // Check whether the entire sale has been returned
-            $sale->load('sale_items');
+        $sale->load('sale_items');
 
-            $allItemsReturned = true;
+        $allItemsReturned = true;
 
-            foreach ($sale->sale_items as $saleItem) {
+        foreach ($sale->sale_items as $saleItem) {
 
-                $returnedQuantity = Sale_return_item::where(
-                    'sale_item_id',
-                    $saleItem->id
-                )->sum('quantity');
+            $returnedQuantity = Sale_return_item::where(
+                'sale_item_id',
+                $saleItem->id
+            )->sum('quantity');
 
-                if ($returnedQuantity < $saleItem->quantity) {
-                    $allItemsReturned = false;
-                    break;
-                }
+            if ($returnedQuantity < $saleItem->quantity) {
+                $allItemsReturned = false;
+                break;
             }
+        }
 
-            if ($allItemsReturned) {
-                $sale->update([
-                    'status' => 'cancelled'
-                ]);
-            }
+        if ($allItemsReturned) {
+            $sale->update([
+                'status' => 'cancelled'
+            ]);
+        }
 
             return response()->json([
                 'success' => true,
