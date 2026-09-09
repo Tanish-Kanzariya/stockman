@@ -271,4 +271,10 @@ class SaleController extends Controller
 
         return redirect()->route('sales.index')->with('success', 'Sale cancelled successfully');
     }
+
+    public function returnForm(Sale $sale){
+        $sale->load('sale_items.product');
+
+        return view('sales.return', compact('sale'));
+    }
 }
