@@ -424,8 +424,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         ).toFixed(2)
                     );
 
-
-
                     window.location.href =
                         "{{ route('sales.index') }}";
                 }

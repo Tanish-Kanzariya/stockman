@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StockMovementController;
@@ -72,3 +73,12 @@ Route::post('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sa
 Route::get('/sales/{sale}/return', [SaleController::class, 'returnForm'])->name('sales.return');
 
 Route::post('/sales/{sale}/return', [SaleController::class, 'processReturn'])->name('sales.return.process');
+
+
+Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+
+Route::get('/reports/product-sales', [ReportController::class, 'productSales'])->name('reports.product-sales');
+
+Route::get('/reports/purchase', [ReportController::class, 'purchase'])->name('reports.purchase');
+
+Route::get('/reports/profit', [ReportController::class, 'profit'])->name('reports.profit');
