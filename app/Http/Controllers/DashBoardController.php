@@ -7,7 +7,7 @@ use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\Sale_item;
 use App\Models\Sale_return_item;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class DashBoardController extends Controller
@@ -245,6 +245,21 @@ class DashBoardController extends Controller
     ->orderByDesc('quantity_sold')
     ->limit(5)
     ->get();
+
+    //Recent Sales
+
+    $recentSales = Sale::query()
+    ->where('status','completed')
+    ->orderByDesc('created_at')
+    ->limit(5)
+    ->get();
+
+    $recentPurchases = Purchase::query()->with('supplier')
+    ->where('status','completed')
+    ->orderByDesc('purchase_date')
+    ->limit(5)
+    ->get();
+
         //Todays sale
 
         $todaySales = Sale::where('status','completed')
@@ -338,7 +353,9 @@ class DashBoardController extends Controller
                                         'salesValues',
                                         'paymentLabels',
                                         'paymentValues',
-                                        'productSales'
+                                        'productSales',
+                                        'recentSales',
+                                        'recentPurchases'
         ));
     }
 }

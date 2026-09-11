@@ -16,73 +16,132 @@
 
     {{-- KPI cards --}}
 
-    <div class="dashboard-stats">
+    <div class="dashboard-kpi-grid">
 
         {{-- Today's Revenue --}}
-        <div class="dashboard-card">
-            <div class="card-icon">
-                ₹
+        <div class="kpi-card kpi-revenue">
+            <div class="kpi-top">
+                <div class="kpi-icon">
+                    ₹
+                </div>
+                <div class="kpi-label">
+                    Today's Revenue
+                </div>
             </div>
 
-            <div class="card-content">
-                <span>Today's Revenue</span>
+            <div class="kpi-value">
+                ₹{{ number_format($todayRevenue,2) }}
+            </div>
 
-                <h2>
-                    ₹{{ number_format($todayRevenue,2) }}
-                </h2>
+            <div class="kpi-footer">
+                Net revenue generated today
             </div>
         </div>
 
-        {{-- Todays Profit --}}
-        <div class="dashboard-card">
-            <div class="card-icon">
-                ↗
+        {{-- Todays return --}}
+        <div class="kpi-card kpi-returns">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">
+                    ↩
+                </div>
+
+                <span class="kpi-label">
+                    Today's Returns
+                </span>
             </div>
 
-            <div class="card-content">
-                <span>Today's Profit</span>
+            <div class="kpi-value">
+                ₹{{ number_format($todayReturn, 2) }}
+            </div>
 
+            <div class="kpi-footer">
+                Refunds processed today
+            </div>
+
+        </div>
+
+        {{-- Todays Profit --}}
+        <div class="kpi-card kpi-profit">
+            <div class="kpi-top">
+                <div class="kpi-icon">
+                    ↗
+                </div>
+
+                <span class="kpi-label">
+                    Today's Profit
+                </span>
+            </div>
+
+            <div class="kpi-value">
                 ₹{{ number_format($todayProfit,2) }}
+            </div>
+
+            <div class="kpi-footer">
+                Gross profit generated today
             </div>
         </div>
 
         {{-- Total Products --}}
-        <div class="dashboard-card">
-            <div class="card-icon">
-                📦
+        <div class="kpi-card kpi-products">
+            <div class="kpi-top">
+                <div class="kpi-icon">
+                    ▣
+                </div>
+                <span class="kpi-label">
+                    Total Products
+                </span>
             </div>
 
-            <div class="card-content">
-                <span>Total Products</span>
-
+            <div class="kpi-value">
                 {{ $totalProducts }}
+            </div>
+
+            <div class="kpi-footer">
+                Products in inventory
             </div>
         </div>
 
         {{-- Low stock --}}
-        <div class="dashboard-card">
-            <div class="card-icon">
-                 ⚠
+        <div class="kpi-card kpi-low-stock">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">
+                    △
+                </div>
+
+                <span class="kpi-label">
+                    Low Stock
+                </span>
             </div>
 
-            <div class="card-content">
-                <span>Low Stock</span>
-
+            <div class="kpi-value">
                 <h2>{{ $lowStockCount }}</h2>
+            </div>
+
+            <div class="kpi-footer">
+                Products need restocking
             </div>
         </div>
 
-        {{-- Inventory alert --}}
-        <div class="inventory-alerts">
-            <div class="alert-card">
-                <span>Low Stock Products</span>
-                <strong>{{ $lowStockCount }}</strong>
+        {{-- Out of stock --}}
+        <div class="kpi-card kpi-out-stock">
+            <div class="kpi-top">
+                <div class="kpi-icon">
+                    ×
+                </div>
+                <span class="kpi-label">
+                    Out of Stock
+                </span>
             </div>
 
-            <div class="alert-card">
-                <span>Out of Stock Products</span>
-                <strong>{{ $outOfStockCount }}</strong>
-            </div>  
+            <div class="kpi-value">
+                {{ $outOfStockCount }}
+            </div>
+
+            <div class="kpi-footer">
+                Products currently unavailable
+            </div>
         </div>
     </div>
 
@@ -138,6 +197,7 @@
 
     </div>
 
+    <div class="dashboard-two-column">
     {{-- Payment method pie chart --}}
     <div class="dashboard-chart-card">
         <div class="chart-header">
@@ -156,12 +216,13 @@
         </div>
     </div>
 
+    {{-- Top selling products table --}}
     <div class="dashboard-table-card">
         <div class="table-card-header">
             <div>
                 <h2>Top Selling Products</h2>
 
-                <p>Best performing products by units sold.</p>
+                <p>Best performing products by units sold</p>
             </div>
 
             <span class="chart-period">
@@ -219,6 +280,161 @@
             </table>
         </div>
     </div>
+    </div>
+
+
+    {{-- Recent Sales --}}
+    <div class="dashboard-table-card">
+
+        <div class="table-card-header">
+            <div>
+                <h2>Recent Sales</h2>
+                <p>Latest completed sales transactions</p>
+            </div>
+
+            <a href="{{ route('sales.index') }}" class="view-all-link">
+                View All
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table dashboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Invoice</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @php 
+                        $i=0
+                    @endphp
+                    @forelse ($recentSales as $sale)
+                        @php $i++ @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>
+                                <strong>
+                                    <a href="{{ route('sales.invoice',$sale->id) }}" class="show_invoice">
+                                        {{ $sale->invoice_number }}
+                                    </a>
+                                </strong>    
+                            </td>
+
+                            <td>
+                                {{ $sale->customer_name ?? 'walk-in customer'  }} 
+                            </td>
+
+                            <td>
+                                 ₹{{ number_format($sale->total_amount,2) }}
+                            </td>
+
+                            <td>
+                                {{ ucfirst($sale->payment_method) }}
+                            </td>
+
+                            <td>
+                                <span class="status-badge status-completed">
+                                    Completed
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ $sale->created_at->format('d M Y, h: i A') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td clas="text-center text-muted my-4" colspan="6">
+                                No Sales Found
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{-- Recent Purchases --}}
+    <div class="dashboard-table-card">
+        <div class="table-card-header">
+            <div>
+                <h2>
+                    Recent Purchases
+                </h2>
+                <p>Latest completed purchases from suppliers</p>
+            </div>
+
+            <a href="{{ route('purchases.index') }}" class="view-all-link">
+                View All
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Invoice</th>
+                        <th>Supplier</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                    $i=0
+                    @endphp
+                    @forelse ($recentPurchases as $purchase)
+                        @php $i++  @endphp
+
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>
+                                <strong>
+                                    <a href="{{ route('purchases.show',$purchase->id) }}" class="show_invoice">
+                                        {{ $purchase->invoice_number }}
+                                    </a>
+                                </strong>   
+                            </td>
+                            <td>
+                                {{ $purchase->supplier->name ?? 'Unknow-supplier' }}
+                            </td>
+
+                            <td>
+                                ₹{{ number_format($purchase->total_amount,2) }}
+                            </td>
+
+                            <td>
+                                {{ \Carbon\Carbon::parse(
+                                    $purchase->purchase_date
+                                )->format('d M Y') }}
+                            </td>
+
+                            <td>
+                                <span class="badge-status status-completed">
+                                    {{ $purchase->status }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center text-muted my-4">
+                                No Purchases Found
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -248,11 +464,13 @@
 
                 tension: 0.4,
 
-                fill: true,
+                fill: 'origin',
 
-                pointRadius: 4,
+                pointRadius: 3,
 
-                pointHoverRadius: 6
+                pointHoverRadius: 5,
+
+                borderWidth: 2
             }]
         },
 
@@ -335,11 +553,19 @@
             datasets:[
                 {
                     label: 'Sales',
-                    data: salesValues
+                    data: salesValues,
+
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThickness: 38
                 },
                 {
                     label: 'Purchases',
-                    data: purchaseValues
+                    data: purchaseValues,
+
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThikness: 38
                 }
             ]
         },
@@ -359,8 +585,21 @@
                             });
                         }
                     }
+                },
+
+                legend:{
+                    display:true,
+                    position:'top',
+                    align:'center',
+                    labels:{
+                        usePointStyle: true,
+                        PointStyle: 'rectRounded',
+                        padding:18,
+                        boxWidth:10
+                    }
                 }
             },
+            
 
             scales:{
                 y:{
