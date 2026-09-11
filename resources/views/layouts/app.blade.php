@@ -84,8 +84,18 @@
             </div>
 
             <div class="admin">
-                Admin
+                Welcome,
+                {{ Auth::user()->name }}
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+
+                <button type="submit">
+                    Logout
+                </button>
+            </form>
             </div>
+            
 
         </header>  
          {{-- Header over --}}

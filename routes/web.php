@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
@@ -11,7 +12,9 @@ use App\Http\Controllers\SaleController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',[DashBoardController::class, 'index'])->name('dashboard');
+Route::get('/',[DashBoardController::class, 'index'])
+->middleware('auth')
+->name('dashboard');
 
 Route::get('/products', function(){
     $products = Product::all();
@@ -81,3 +84,23 @@ Route::get('/reports/product-sales', [ReportController::class, 'productSales'])-
 Route::get('/reports/purchase', [ReportController::class, 'purchase'])->name('reports.purchase');
 
 Route::get('/reports/profit', [ReportController::class, 'profit'])->name('reports.profit');
+
+Route::get('/register', [AuthController::class, 'register'])
+->middleware('guest')->name('register');
+
+Route::post('/register',[AuthController::class, 'store'])
+->middleware('guest')
+->name('register.store');
+
+Route::get('/login', [AuthController::class, 'login'])
+    ->middleware('guest')
+    ->name('login');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
+
+
+Route::post('/login', [AuthController::class, 'authenticate'])
+    ->middleware('guest')
+    ->name('login.authenticate');
