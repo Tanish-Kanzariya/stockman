@@ -105,7 +105,7 @@
 
             <div>
 
-                <span>Sales Revenue</span>
+                <span>Net Sales Revenue</span>
 
                 <h2>
                     ₹{{ number_format($totalRevenue, 2) }}
@@ -114,6 +114,26 @@
             </div>
 
         </div>
+
+        <div class="report-summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fa-solid fa-rotate-left"></i>
+
+            </div>
+
+            <div>
+
+                <span>Returned Amount</span>
+
+                <h2>
+                    ₹{{ number_format($totalReturned, 2) }}
+                </h2>
+
+            </div>
+
+            </div>
 
 
         {{-- Cost --}}

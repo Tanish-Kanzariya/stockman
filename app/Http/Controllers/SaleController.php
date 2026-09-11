@@ -152,6 +152,8 @@ class SaleController extends Controller
 
                     'price' => $price,
 
+                    'cost_price' => $product->purchase_price,
+
                     'subtotal' => $subtotal,
 
                 ]);
@@ -367,7 +369,7 @@ class SaleController extends Controller
 
                     'product_id' => $saleItem->product_id,
 
-                    'quantity' => $returnableQuantity,
+                    'quantity' => $returnQuantity,
 
                     'price' => $saleItem->price,
 
@@ -384,7 +386,7 @@ class SaleController extends Controller
                 StockMovement::create([
                     'product_id' => $product->id,
                     'type' => 'sale_return',
-                    'quantity' => $returnableQuantity,
+                    'quantity' => $returnQuantity,
                     'reference_id' => $saleReturn->id,
                     'note' => 'Stock restored due to sales return'.$sale->invoice_number
                 ]);

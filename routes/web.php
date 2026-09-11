@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportController;
@@ -10,9 +11,7 @@ use App\Http\Controllers\SaleController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/',[DashBoardController::class, 'index'])->name('dashboard');
 
 Route::get('/products', function(){
     $products = Product::all();

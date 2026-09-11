@@ -181,6 +181,7 @@
             <table class="table product-table align-middle mb-0">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Product</th>
                         <th>SKU</th>
                         <th>Category</th>
@@ -195,8 +196,15 @@
                 </thead>
 
                 <tbody>
+                @php
+                    $i = 0;
+                @endphp
                     @forelse ($products as $product)
+                        @php
+                            $i++;
+                        @endphp
                         <tr>
+                            <td>{{ $i }}</td>
                             {{-- Product Name --}}
                             <td>
                                 <span class="product-name">

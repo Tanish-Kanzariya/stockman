@@ -39,7 +39,8 @@ class ProductController extends Controller
 
         if($request->filled('stock')){
             if($request->stock == 'low'){
-                $query->whereColumn('stock_quantity', '<=', 'minimum_stock');
+                $query->whereColumn('stock_quantity', '<=', 'minimum_stock')
+                ->where('stock_quantity', '>', 0);
             }
 
             if($request->stock == 'out'){
