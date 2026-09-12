@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
+        'firm_id',
         'name',
         'category_id',
         'sku',
@@ -32,5 +33,9 @@ class Product extends Model
 
     public function stock_movements(){
         return $this->hasMany(StockMovement::class);
+    }
+
+    public function firm(){
+        return $this->belongsTo('Firm::class');
     }
 }

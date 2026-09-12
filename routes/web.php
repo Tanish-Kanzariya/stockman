@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
@@ -15,75 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[DashBoardController::class, 'index'])
 ->middleware('auth')
 ->name('dashboard');
-
-Route::get('/products', function(){
-    $products = Product::all();
-    return $products;
-});
-
-Route::get('/products',[ProductController::class,'showProducts'])->name('products.index');
-
-Route::get('/product/{product}',[ProductController::class,'singleProduct'])->name('singleProduct');
-
-Route::get('/products/update/{id}', [ProductController::class,'create'])->name('product.update_form');
-
-Route::post('/products/',[ProductController::class,'store'])->name('product.submit');
-
-Route::get('/products/search', [ProductController::class,'search'])->name('products.search');
-
-Route::POST('/product/{id}/edit',[ProductController::class,'update'])->name('product.update');
-
-
-Route::get('/purchase',[PurchaseController::class,'create'])->name('createPurchase');
-
-Route::post('/purchase',[PurchaseController::class,'store'])->name('purchase.store');
-
-Route::get('/purchases',[PurchaseController::class,'index'])->name('purchases.index');
-
-Route::get('/purchases/{purchase}',[PurchaseController::class,'show'])->name('purchases.show');
-
-Route::post('/purchases/{purchase}/cancel', [PurchaseController::class,'cancel'])->name('purchase.cancel');
-
-Route::get('/stock',[StockController::class,'index'])->name('stock.index');
-
-
-Route::get('/suppliers',[SupplierController::class,'index'])->name('supplier.index');
-
-Route::get('/create/supplier/{id?}',[SupplierController::class,'create'])->name('supplier.create');
-
-Route::POST('/store/supplier',[SupplierController::class,'store'])->name('supplier.store');
-
-Route::POST('/supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
-
-Route::POST('/supplier/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
-
-Route::get('/stock-movements/', [StockMovementController::class,'index'])->name('stockMovements');
-
-
-Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
-
-Route::get('/sales/create/', [SaleController::class, 'create'])->name('sales.create');
-
-Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.searchProducts');
-
-Route::POST('/sales',[SaleController::class,'store'])->name('sales.store');
-
-Route::get('/sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
-
-Route::post('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
-
-Route::get('/sales/{sale}/return', [SaleController::class, 'returnForm'])->name('sales.return');
-
-Route::post('/sales/{sale}/return', [SaleController::class, 'processReturn'])->name('sales.return.process');
-
-
-Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
-
-Route::get('/reports/product-sales', [ReportController::class, 'productSales'])->name('reports.product-sales');
-
-Route::get('/reports/purchase', [ReportController::class, 'purchase'])->name('reports.purchase');
-
-Route::get('/reports/profit', [ReportController::class, 'profit'])->name('reports.profit');
 
 Route::get('/register', [AuthController::class, 'register'])
 ->middleware('guest')->name('register');
@@ -104,3 +36,87 @@ Route::post('/logout', [AuthController::class, 'logout'])
 Route::post('/login', [AuthController::class, 'authenticate'])
     ->middleware('guest')
     ->name('login.authenticate');
+
+Route::middleware('auth')->group(function(){
+
+    Route::get('/products', function(){
+    $products = Product::all();
+    return $products;
+    });
+
+    Route::get('/products',[ProductController::class,'showProducts'])->name('products.index');
+
+    Route::get('/product/{product}',[ProductController::class,'singleProduct'])->name('singleProduct');
+
+    Route::get('/products/update/{id}', [ProductController::class,'create'])->name('product.update_form');
+
+    Route::post('/products/',[ProductController::class,'store'])->name('product.submit');
+
+    Route::get('/products/search', [ProductController::class,'search'])->name('products.search');
+
+    Route::POST('/product/{id}/edit',[ProductController::class,'update'])->name('product.update');
+
+
+    Route::get('/purchase',[PurchaseController::class,'create'])->name('createPurchase');
+
+    Route::post('/purchase',[PurchaseController::class,'store'])->name('purchase.store');
+
+    Route::get('/purchases',[PurchaseController::class,'index'])->name('purchases.index');
+
+    Route::get('/purchases/{purchase}',[PurchaseController::class,'show'])->name('purchases.show');
+
+    Route::post('/purchases/{purchase}/cancel', [PurchaseController::class,'cancel'])->name('purchase.cancel');
+
+    Route::get('/stock',[StockController::class,'index'])->name('stock.index');
+
+
+    Route::get('/suppliers',[SupplierController::class,'index'])->name('supplier.index');
+
+    Route::get('/create/supplier/{id?}',[SupplierController::class,'create'])->name('supplier.create');
+
+    Route::POST('/store/supplier',[SupplierController::class,'store'])->name('supplier.store');
+
+    Route::POST('/supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
+
+    Route::POST('/supplier/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
+
+    Route::get('/stock-movements/', [StockMovementController::class,'index'])->name('stockMovements');
+
+
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+
+    Route::get('/sales/create/', [SaleController::class, 'create'])->name('sales.create');
+
+    Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.searchProducts');
+
+    Route::POST('/sales',[SaleController::class,'store'])->name('sales.store');
+
+    Route::get('/sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
+
+    Route::post('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
+
+    Route::get('/sales/{sale}/return', [SaleController::class, 'returnForm'])->name('sales.return');
+
+    Route::post('/sales/{sale}/return', [SaleController::class, 'processReturn'])->name('sales.return.process');
+
+
+    Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+
+    Route::get('/reports/product-sales', [ReportController::class, 'productSales'])->name('reports.product-sales');
+
+    Route::get('/reports/purchase', [ReportController::class, 'purchase'])->name('reports.purchase');
+
+    Route::get('/reports/profit', [ReportController::class, 'profit'])->name('reports.profit');
+
+
+    Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+
+    Route::get('/categories/{categories}/edit', [CategoriesController::class, 'create'])->name('categories.edit');
+
+    Route::post('/categories/create', [CategoriesController::class, 'store'])->name('categories.store');
+
+    Route::get('/categories',[CategoriesController::class, 'index'])->name('categories.index');
+
+    Route::post('/categories/{category}/update', [CategoriesController::class, 'update'])->name('categories.update');
+
+});

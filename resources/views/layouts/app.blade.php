@@ -40,7 +40,7 @@
             </li>
 
             <li>
-                <a href="">Categories</a>
+                <a href="{{ route('categories.index') }}">Categories</a>
             </li>
 
             <li>

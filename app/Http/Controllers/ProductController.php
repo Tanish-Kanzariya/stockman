@@ -7,11 +7,15 @@ use App\Models\Product;
 use App\Models\Categories;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function showProducts(Request $request){
-        $query = Product::with('Categories');
+        // $query = Product::where('firm_id',Auth::user()->firm_id)->('Categories');
+
+        $query = Product::where('firm_id',Auth::user()->firm_id)->with('Categories');
 
         //Search filter with product name or SKU
 
@@ -50,12 +54,12 @@ class ProductController extends Controller
 
         $products = $query->latest('id')->paginate(10)->withQueryString();
 
-        $totalProducts = Product::count();
-        $activeProducts = Product::where('is_active',1)->count();
+        $totalProducts = Product::where('firm_id', Auth::user()->firm_id)->count();
+        $activeProducts = Product::where('firm_id', Auth::user()->firm_id)->where('is_active',1)->count();
 
-        $inactiveProducts = Product::where('is_active', 0)->count();
+        $inactiveProducts = Product::where('firm_id', Auth::user()->firm_id)->where('is_active', 0)->count();
 
-        $categories = Categories::orderBy('name')->get();
+        $categories = Categories::where('firm_id',Auth::user()->firm_id)->orderBy('name')->get();
 
         return view('products.index', compact('products',
                                             'categories',
@@ -73,7 +77,12 @@ class ProductController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:250',
-            'category_id' => 'required|integer',
+            'category_id' => [
+                'required',
+                'integer',
+                Rule::exists('categories', 'id')
+                ->where('firm_id', Auth::user()->firm_id)
+            ],
             'purchase_price' => 'required|decimal:2|min:0',
             'selling_price' => 'required|decimal:2|min:0',
             'stock_quantity' => 'required|integer|min:0',
@@ -82,7 +91,7 @@ class ProductController extends Controller
             'is_active' => 'boolean'
         ]);
 
-        $product = Product::findOrFail($id);
+        $product = Product::where('firm_id',Auth::user()->firm_id)->findOrFail($id);
 
         $product->update($validated);
 
@@ -94,19 +103,22 @@ class ProductController extends Controller
     }
     public function singleProduct(Product $product){
         // $product = Product::find($id);
+        if ($product->firm_id !== Auth::user()->firm_id) {
+        abort(404);
+        }
 
         return view('products.show', compact('product'));
     }
 
-    public function create(?int $id = nul){
+    public function create(?int $id = null){
     
         if($id){
-        $product = Product::findOrFail($id);
+        $product = Product::where('firm_id', Auth::user()->firm_id)->findOrFail($id);
         }else{
             $product = new Product();
         }
 
-        $categories = Categories::all();
+        $categories = Categories::where('firm_id', Auth::user()->firm_id)->orderBy('name')->get();
 
         return view('products.update',compact('product','categories'));
     }
@@ -125,9 +137,10 @@ class ProductController extends Controller
             'is_active' => 'nullable|boolean'
         ]);
 
+        $validated['firm_id'] = Auth::user()->firm_id;
         $name = strtoupper(substr(preg_replace('/[^A-Za-z]/','',$req->name),0,4));
 
-        $count = Product::where('sku','like',$name.'%')->count()+1;
+        $count = Product::where('firm_id', Auth::user()->firm_id)->where('sku','like',$name.'%')->count()+1;
 
         $sku = $name.str_pad($count,3,'0',STR_PAD_LEFT);
 
@@ -150,7 +163,7 @@ class ProductController extends Controller
 
         $search = $req->input('search');
 
-        $products = Product::where('name', 'like', '%'. $search . '%')->limit(10)->get();
+        $products = Product::where('firm_id', Auth::user()->firm_id)->where('name', 'like', '%'. $search . '%')->limit(10)->get();
 
         return response()->json($products);
     }
