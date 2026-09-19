@@ -556,7 +556,7 @@
         fetch('/sales',{
             method: 'POST',
             headers:{
-                'content-Type':'application/json',
+                'Content-Type':'application/json',
                 'Accept' : 'application/json',
 
                 'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]')
@@ -564,11 +564,15 @@
             },
             body : JSON.stringify(saleData)
         })
-        .then(response => {
+        .then(async response => {
+
+            const data = await response.json();
                 if(!response.ok){
-                    throw new Error('Failed to complete sale');
+                    console.error('laravel error', data);
+
+                    throw new Error(data.message || 'Failed to complete sale')
                 }
-                return response.json();
+                return data;
         })
         .then(data =>{
             if(data.success){
@@ -582,6 +586,7 @@
         })
         .catch(error=>{
             console.log('Sale error', error);
+            alert('error.message');
         });
     });
 

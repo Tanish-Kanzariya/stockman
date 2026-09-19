@@ -103,9 +103,11 @@ class SaleController extends Controller
         return DB::transaction(function () use ($validated, $request){
 
             // Generating Invoice Number
+
+            $firmId = Auth::user()->firm_id;
            $date = now()->format('Ymd');
 
-           $lastSale = Sale::where('firm_id', Auth::user()->firm_id)
+           $lastSale = Sale::where('firm_id', $firmId)
            ->latest('id')->first();
 
            $nextNumber = $lastSale ? $lastSale->id + 1 : 1;
@@ -252,8 +254,7 @@ class SaleController extends Controller
     }
 
     public function invoice(Sale $sale){
-
-        if($sale->firm_id !== Auth::user()->firm_id){
+        if((int)$sale->firm_id !== (int)Auth::user()->firm_id){
             abort(404);
         }
         $sale->load('sale_items.product');

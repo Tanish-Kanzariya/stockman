@@ -9,10 +9,13 @@ use App\Models\Sale_item;
 use App\Models\Sale_return_item;
 // use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DashBoardController extends Controller
 {
     public function index(){
+
+    $firmId = Auth::user()->firm_id;
 
     //Revenue chart
     $lastSevenDays = collect();
@@ -31,6 +34,7 @@ class DashBoardController extends Controller
             '=',
             'sales.id'
         )
+        ->where('sales.firm_id', $firmId)
         ->where('sales.status', 'completed')
         ->whereDate(
             'sales.created_at',
@@ -63,6 +67,7 @@ class DashBoardController extends Controller
             '=',
             'sales.id'
         )
+        ->where('sales.firm_id', $firmId)
         ->where('sale_returns.status', 'completed')
         ->where('sales.status', 'completed')
         ->whereDate(
@@ -127,6 +132,7 @@ class DashBoardController extends Controller
     //Purchase V/S Sale chart
 
     $dailyPurchases = Purchase::query()
+    ->where('firm_id', $firmId)
     ->where('status','completed')
     ->whereDate('created_at', '>=', Carbon::today()->subDays(6))
     ->selectRaw('DATE(purchase_date) as purchase_date')
@@ -137,6 +143,7 @@ class DashBoardController extends Controller
 
     $daily_sales = Sale_item::query()
     ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+    ->where('sales.firm_id', $firmId)
     ->where('sales.status', 'completed')
     ->whereDate('sales.created_at', '>=', Carbon::today()->subDays(6))
     ->selectRaw('DATE(sales.created_at) as sale_date')
@@ -148,6 +155,7 @@ class DashBoardController extends Controller
     $daily_returns = Sale_return_item::query()
     ->join('sale_returns', 'sale_return_items.sale_return_id', '=', 'sale_returns.id')
     ->join('sales', 'sale_returns.sale_id', '=', 'sales.id')
+    ->where('sales.firm_id', $firmId)
     ->where('sales.status', 'completed')
     ->where('sale_returns.status','completed')
     ->whereDate('sales.created_at', '>=', Carbon::today()->subDays(6))
@@ -188,11 +196,12 @@ class DashBoardController extends Controller
     //Payment method chart
 
     $paymentMethods = Sale::query()
+    ->where('firm_id', $firmId)
     ->where('status', 'completed')
     ->select('payment_method')
     ->selectRaw('SUM(total_amount) as total_amount')
     ->groupBy('payment_method')
-    ->orderByDesc('payment_method')
+    ->orderByDesc('total_amount')
     ->get();
 
     $paymentLabels =[];
@@ -208,6 +217,8 @@ class DashBoardController extends Controller
 
     $returnsQuery = Sale_return_item::query()
     ->join('sale_returns', 'sale_return_items.sale_return_id', '=','sale_returns.id')
+    ->join('sales', 'sale_returns.sale_id', '=', 'sales.id')
+    ->where('sales.firm_id', $firmId)
     ->where('sale_returns.status','completed')
     ->select('sale_return_items.sale_item_id')
     ->selectRaw('SUM(sale_return_items.quantity) as returned_quantity')
@@ -231,6 +242,8 @@ class DashBoardController extends Controller
             );
         }
     )
+    ->where('sales.firm_id', $firmId)
+    ->where('products.firm_id', $firmId)
     ->where('sales.status', 'completed')
     ->select('products.id', 'products.name', 'products.sku')
     ->selectRaw('SUM(sale_items.quantity - COALESCE(returns.returned_quantity,0))
@@ -249,12 +262,14 @@ class DashBoardController extends Controller
     //Recent Sales
 
     $recentSales = Sale::query()
+    ->where('firm_id', $firmId)
     ->where('status','completed')
     ->orderByDesc('created_at')
     ->limit(5)
     ->get();
 
     $recentPurchases = Purchase::query()->with('supplier')
+    ->where('firm_id', $firmId)
     ->where('status','completed')
     ->orderByDesc('purchase_date')
     ->limit(5)
@@ -263,12 +278,14 @@ class DashBoardController extends Controller
         //Todays sale
 
         $todaySales = Sale::where('status','completed')
+        ->where('firm_id', $firmId)
         ->whereDate('created_at', today());
 
         //Todays gross sale
 
         $todayGrossSale = Sale_item::query()
         ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+        ->where('sales.firm_id', $firmId)
         ->where('sales.status', 'completed')
         ->whereDate('sales.created_at', today())
         ->sum('sale_items.subtotal');
@@ -278,6 +295,7 @@ class DashBoardController extends Controller
         ->join('sale_returns',
         'sale_return_items.sale_return_id', '=', 'sale_returns.id')
         ->join('sales', 'sale_returns.sale_id', '=', 'sales.id')
+        ->where('sales.firm_id', $firmId)
         ->where('sales.status', 'completed')
         ->whereDate('sales.created_at', today())
         ->sum('sale_return_items.subtotal');
@@ -293,6 +311,7 @@ class DashBoardController extends Controller
             '=',
             'sales.id'
         )
+        ->where('sales.firm_id', $firmId)
         ->where('sales.status', 'completed')
         ->whereDate('sales.created_at', today())
         ->selectRaw('SUM(sale_items.quantity * sale_items.cost_price) as total_cost')
@@ -312,7 +331,7 @@ class DashBoardController extends Controller
         'sale_items.sale_id',
         '=',
         'sales.id')
-
+        ->where('sales.firm_id', $firmId)
         ->where('sale_returns.status','completed')
         ->where('sales.status','completed')
         ->whereDate('sales.created_at', today())
@@ -328,18 +347,18 @@ class DashBoardController extends Controller
 
         //Total products
 
-        $totalProducts = Product::count();
+        $totalProducts = Product::where('firm_id', $firmId)->count();
 
         //Low stock products
 
-        $lowStockCount = Product::whereColumn(
+        $lowStockCount = Product::where('firm_id', $firmId)->whereColumn(
             'stock_quantity', '<=', 'minimum_stock'
         )->where('stock_quantity', '>', 0)
         ->count();
 
         //Out of stock products
 
-        $outOfStockCount = Product::where('stock_quantity',0)->count();
+        $outOfStockCount = Product::where('firm_id', $firmId)->where('stock_quantity',0)->count();
 
         return view('dashboard', compact('todayRevenue',
                                         'todayReturn',

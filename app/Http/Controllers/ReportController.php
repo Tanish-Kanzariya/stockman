@@ -7,13 +7,18 @@ use App\Models\Sale;
 use App\Models\Sale_item;
 use App\Models\Sale_return_item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
     //Sales report
     public function sales(Request $request){
 
-        $query = Sale::query()->where('status', 'completed');
+        $firmId = Auth::user()->firm_id;
+
+        $query = Sale::query()
+        ->where('firm_id', $firmId)
+        ->where('status', 'completed');
 
         //From date filter
         if($request->filled('from_date')){
@@ -56,10 +61,14 @@ class ReportController extends Controller
 
     public function productSales(Request $request){
 
+        $firmId = Auth::user()->firm_id;
+
         $basequery = Sale_item::query()
         ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
         ->join('products', 'sale_items.product_id', '=', 'products.id')
-        ->where('sales.status', 'completed');
+        ->where('sales.status', 'completed')
+        ->where('sales.firm_id', $firmId)
+        ->where('products.firm_id', $firmId);
 
         //Date from filter
 
@@ -111,7 +120,11 @@ class ReportController extends Controller
 
     public function purchase(Request $request){
 
-        $query = Purchase::query()->where('status', 'completed');
+        $firmId = Auth::user()->firm_id;
+
+        $query = Purchase::query()
+        ->where('firm_id', $firmId)
+        ->where('status', 'completed');
 
         //Date from filter
         if($request->filled('from_date')){
@@ -146,13 +159,22 @@ class ReportController extends Controller
     //Profit report
     public function profit(Request $request)
     {
+
+        $firmId = Auth::user()->firm_id;
+
         $returnsQuery = Sale_return_item::query()
             ->join(
                 'sale_returns',
                 'sale_return_items.sale_return_id',
                 '=',
                 'sale_returns.id'
+            )->join(
+                'sales',
+                'sale_returns.sale_id',
+                '=',
+                'sales.id'
             )
+            ->where('sales.firm_id', $firmId)
             ->where('sale_returns.status', 'completed')
             ->select('sale_return_items.sale_item_id')
             ->selectRaw(
@@ -188,6 +210,8 @@ class ReportController extends Controller
                     );
                 }
             )
+            ->where('sales.firm_id', $firmId)
+            ->where('products.firm_id', $firmId)
             ->where('sales.status', 'completed');
 
         if ($request->filled('from_date')) {

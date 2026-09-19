@@ -351,7 +351,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td clas="text-center text-muted my-4" colspan="6">
+                            <td class="text-center text-muted my-4" colspan="7">
                                 No Sales Found
                             </td>
                         </tr>
