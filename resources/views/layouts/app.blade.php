@@ -58,6 +58,10 @@
             <li>
                 <a href="{{ route('sales.index') }}">Sales</a>
             </li>
+
+            <li>
+                <a href="{{ route('stockMovements') }}">Stock Movements</a>
+            </li>
             
             <li>
                 <a href="">Reports</a>

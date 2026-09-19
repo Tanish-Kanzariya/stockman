@@ -12,7 +12,8 @@ class StockMovement extends Model
         'type',
         'quantity',
         'reference_id',
-        'note'
+        'note',
+        'firm_id'
     ];
     
     public function product(){
@@ -21,5 +22,9 @@ class StockMovement extends Model
 
     public function purchase(){
         return $this->belongsTo(Purchase::class,'reference_id');
+    }
+
+    public function firm(){
+        return $this->belongsTo(Firm::class);
     }
 }

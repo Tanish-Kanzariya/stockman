@@ -188,7 +188,7 @@
 
         {{-- Table section --}}
 
-        <div class="stock-movement-table-section mt-4">
+        <div class="stock-movement-table-section mt-4" id="stock_movement">
             <div class="d-flex align-items-center justify-content-between mb-3 p-2">
                 <div>
                     <h4 class="mb-1 fw-semibold">

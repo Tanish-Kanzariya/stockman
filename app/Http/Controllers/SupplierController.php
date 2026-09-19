@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 // use Illuminate\Auth\Events\Validated;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupplierController extends Controller
 {
 
     public function index(Request $request){
-        $query = Supplier::query();
+        $query = Supplier::where('firm_id', Auth::user()->firm_id);
 
         if($request->filled('search')){
             $search = $request->search;
@@ -27,7 +28,8 @@ class SupplierController extends Controller
 
     public function create(?int $id = null){
         if($id){
-            $supplier = Supplier::find($id);
+            $supplier = Supplier::where('firm_id', Auth::user()->firm_id)
+            ->findOrFail($id);
         }else{
             $supplier = new Supplier();
         }
@@ -36,12 +38,13 @@ class SupplierController extends Controller
     }
 
     public function update(Request $request, $id){
-        $supplier = Supplier::findOrFail($id);
+        $supplier = Supplier::where('firm_id', Auth::user()->firm_id)
+        ->findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string',
             'phone' => 'required|digits:10',
-            'email' => 'nullable',
+            'email' => 'nullable|email',
             'address' => 'nullable|string'
         ]);
 
@@ -53,7 +56,8 @@ class SupplierController extends Controller
     }
 
     public function delete($id){
-        $supplier = Supplier::findOrFail($id);
+        $supplier = Supplier::where('firm_id', Auth::user()->id)
+        ->findOrFail($id);
 
         if($supplier->purchases()->exists()){
             return back()->with('error', 'You cannot delete this because purchase record exists !');
@@ -66,14 +70,14 @@ class SupplierController extends Controller
         ->with('success', 'Supplier deleted successfully');
     }
     public function store(Request $request){
-        // dd('Store method reached');
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'phone' => 'required|digits:10',
             'email' => 'nullable',
             'address' => 'nullable'
         ]);
-        // dd($validated);
+
+        $validated['firm_id'] = Auth::user()->firm_id;
         $supplier = Supplier::create($validated);
         return redirect()
         ->route('supplier.index')

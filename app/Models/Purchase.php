@@ -12,6 +12,7 @@ class Purchase extends Model
         'total_amount',
         'status',
         'purchase_date',
+        'firm_id'
 
     ];
     public function supplier(){
@@ -20,5 +21,9 @@ class Purchase extends Model
 
     public function items(){
         return $this->hasMany(Purchase_item::class);
+    }
+
+    public function firm(){
+        return $this->belongsTo(Firm::class);
     }
 }

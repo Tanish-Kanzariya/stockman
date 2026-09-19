@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\StockMovement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StockMovementController extends Controller
 {
     public function index(Request $request){
-        $query = StockMovement::with('product','purchase');
+
+        $firmId = Auth::user()->firm_id;
+
+        $query = StockMovement::where('firm_id', $firmId)
+        ->with('product','purchase');
 
         // Product filter
 
@@ -36,17 +41,20 @@ class StockMovementController extends Controller
         }
 
         $stockMovements = $query->latest('id')
-        ->paginate(10)->withQueryString();
+        ->paginate(10)->withQueryString()->fragment('stock_movement');
 
-        $products = Product::orderBy('name')->get();
+        $products = Product::where('firm_id', $firmId)->orderBy('name')->get();
 
-        $totalMovements = StockMovement::count();
+        $totalMovements = StockMovement::where('firm_id', $firmId)->count();
 
-        $stockAdded = StockMovement::where('quantity', '>', 0)->sum('quantity');
+        $stockAdded = StockMovement::where('firm_id', $firmId)
+        ->where('quantity', '>', 0)->sum('quantity');
 
-        $stockReduced = StockMovement::where('quantity', '<', 0)->sum('quantity');
+        $stockReduced = StockMovement::where('firm_id', $firmId)
+        ->where('quantity', '<', 0)->sum('quantity');
 
-        $todaysMovement = StockMovement::whereDate('created_at', today())->count();
+        $todaysMovement = StockMovement::where('firm_id', $firmId)
+        ->whereDate('created_at', today())->count();
 
         return view('stockmovements.index',
         compact('stockMovements',

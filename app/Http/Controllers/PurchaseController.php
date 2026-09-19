@@ -10,11 +10,16 @@ use App\Models\Categories;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class PurchaseController extends Controller
 {
     public function index(Request $request){
-        $query = Purchase::with('supplier');
+
+        $firmId = Auth::user()->firm_id;
+
+        $query = Purchase::where('firm_id', $firmId)->with('supplier');
 
         //INVOICE FILTER
         if($request->filled('invoice')){
@@ -37,18 +42,23 @@ class PurchaseController extends Controller
         }
 
         //Calculating total purchase amount except the cancelled purchase
-        $totalAmountPurchase = Purchase::where('status','completed')->sum('total_amount');
+        $totalAmountPurchase = Purchase::where('firm_id', $firmId)
+        ->where('status','completed')->sum('total_amount');
 
-        $totalAmountCancelled = Purchase::where('status','cancelled')->sum('total_amount');
+        $totalAmountCancelled = Purchase::where('firm_id', $firmId)
+        ->where('status','cancelled')->sum('total_amount');
 
-        $completedPurchaseCount = Purchase::where('status','completed')->count();
+        $completedPurchaseCount = Purchase::where('firm_id', $firmId)
+        ->where('status','completed')->count();
 
-        $cancelledPurchaseCount = Purchase::where('status','cancelled')->count();
+        $cancelledPurchaseCount = Purchase::where('firm_id', $firmId)
+        ->where('status','cancelled')->count();
 
 
-        $purchases = $query->latest('id')->paginate(10)->withQueryString()->fragment('purchase-table');
+        $purchases = $query->latest('id')->paginate(10)
+        ->withQueryString()->fragment('purchase-table');
 
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::where('firm_id', $firmId)->orderBy('name')->get();
 
         return view('purchases.index',
          compact(
@@ -64,11 +74,19 @@ class PurchaseController extends Controller
     public function show(Purchase $purchase){
         // $purchase = Purchase::with(['suppliers','items.product'])->findOrFail($id);
 
+        if($purchase->firm_id !== Auth::user()->firm_id){
+            abort(404);
+        }
+
         $purchase->load(['supplier', 'items.product']);
         return view('purchases.show', compact('purchase'));
     }
 
     public function cancel(Purchase $purchase){
+
+    if($purchase->firm_id !== Auth::user()->firm_id){
+        abort(404);
+    }
         
         if($purchase->status === 'cancelled'){
             return back()->with('error','This item is already cancelled');
@@ -79,7 +97,8 @@ class PurchaseController extends Controller
         DB::transaction(function () use ($purchase){
 
              foreach($purchase->items as $item){
-            $product = Product::find($item->product_id);
+            $product = Product::where('firm_id', Auth::user()->firm_id)
+            ->find($item->product_id);
 
            
 
@@ -92,6 +111,7 @@ class PurchaseController extends Controller
             $product->decrement('stock_quantity', $item->quantity);
 
             StockMovement::create([
+                'firm_id' => Auth::user()->firm_id,
                 'product_id' => $product->id,
                 'type' => 'purchase_cancel',
                 'quantity' => -$item->quantity,
@@ -101,7 +121,8 @@ class PurchaseController extends Controller
 
             $latestPurchaseItem = Purchase_item::where('product_id',$item->product_id)
                 ->whereHas('purchase',function($query){
-                    $query->where('status','completed');
+                    $query->where('firm_id', Auth::user()->firm_id)
+                    ->where('status','completed');
                 })
                 ->latest('id')
                 ->first();
@@ -123,19 +144,23 @@ class PurchaseController extends Controller
     }
     public function create(){
 
-        $suppliers = Supplier::all();
-        $products = Product::all();
-        $categories = Categories::all();
+        $firmId = Auth::user()->firm_id;
+        $suppliers = Supplier::where('firm_id', $firmId)->get();
+        $products = Product::where('firm_id', $firmId)->get();
+        $categories = Categories::where('firm_id', $firmId)->get();
         return view('purchases.create',compact('suppliers','products','categories'));
     }
 
     public function store(Request $req){
         $validated = $req->validate([
-            'supplier_id' => 'required|integer|exists:suppliers,id',
+            'supplier_id' => ['required', 'integer', Rule::exists('suppliers', 'id')
+            ->where('firm_id', Auth::user()->firm_id)
+            ],
             'purchase_date' => 'required|date',
             'purchase_items' => 'required|string'
         ]);
 
+        $validated['firm_id'] = Auth::user()->firm_id;
         $items = json_decode($validated['purchase_items'],true);
         if(!is_array($items) || count($items) === 0){
             return back()->withErrors([
@@ -144,7 +169,8 @@ class PurchaseController extends Controller
         }
 
 
-        $latestPurchase = Purchase::latest('id')->first();
+        $latestPurchase = Purchase::where('firm_id', Auth::user()->firm_id)
+        ->latest('id')->first();
 
         $nextNum = $latestPurchase ? $latestPurchase->id + 1 : 1;
 
@@ -157,7 +183,8 @@ class PurchaseController extends Controller
                 'invoice_number' => $invoiceNumber,
                 'purchase_date' => $validated['purchase_date'],
                 'total_amount' => 0,
-                'status' => 'completed'
+                'status' => 'completed',
+                'firm_id' => Auth::user()->firm_id
             ]);
 
 
@@ -166,7 +193,10 @@ class PurchaseController extends Controller
             foreach($items as $item){
 
                 validator($item,[
-                    'product_id' => 'required|integer|exists:products,id',
+                    'product_id' => ['required','integer', 
+                    Rule::exists('products', 'id')
+                    ->where('firm_id', Auth::user()->firm_id)
+                    ],
                     'quantity' => 'required|integer|min:1',
                     'price' => 'required|numeric|min:0'
                 ])->validate();
@@ -180,7 +210,8 @@ class PurchaseController extends Controller
                 $total = $total + $itemTotal;
 
 
-                $product = Product::find($product_id);
+                $product = Product::where('firm_id', Auth::user()->firm_id)
+                ->findOrFail($product_id);
 
                 $previousPrice = $product->purchase_price;
 
@@ -196,6 +227,7 @@ class PurchaseController extends Controller
                 $product->increment('stock_quantity',$quantity);
 
                 StockMovement::create([
+                    'firm_id' => Auth::user()->firm_id,
                     'product_id' => $product->id,
                     'type' => 'purchase',
                     'quantity' => $quantity,
