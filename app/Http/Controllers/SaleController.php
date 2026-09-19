@@ -10,13 +10,17 @@ use App\Models\Sale_return_item;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class SaleController extends Controller
 {
 
     public function index(Request $request){
 
-        $query = Sale::with('sale_items.product');
+        $firmId = Auth::user()->firm_id;
+
+        $query = Sale::where('firm_id', $firmId)->with('sale_items.product');
 
         //Search by invoice, customer name and phone number
         if($request->filled('search')){
@@ -45,15 +49,19 @@ class SaleController extends Controller
 
         //Summary cards 
 
-        $totalSales = Sale::where('status', 'completed')->count();
+        $totalSales = Sale::where('firm_id', $firmId)
+        ->where('status', 'completed')->count();
 
-        $totalRevenue = Sale::where('status', 'completed')->sum('total_amount');
+        $totalRevenue = Sale::where('firm_id', $firmId)
+        ->where('status', 'completed')->sum('total_amount');
 
-        $todaysSales = Sale::where('status', 'completed')
+        $todaysSales = Sale::where('firm_id', $firmId)
+        ->where('status', 'completed')
                         ->whereDate('created_at', today())
                         ->count();
         
-        $cancelledSales = Sale::where('status', 'cancelled')->count();
+        $cancelledSales = Sale::where('firm_id', $firmId)
+        ->where('status', 'cancelled')->count();
 
         $sales = $query->latest()->paginate(10)->withQueryString()->fragment('saleCardBody');
 
@@ -84,7 +92,10 @@ class SaleController extends Controller
 
             'items' => 'required|array|min:1',
 
-            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.product_id' => ['required', 'integer', 
+            Rule::exists('products',  'id')
+            ->where('firm_id', Auth::user()->firm_id)
+            ],
 
             'items.*.quantity' => 'required|integer|min:1'
         ]);
@@ -94,7 +105,8 @@ class SaleController extends Controller
             // Generating Invoice Number
            $date = now()->format('Ymd');
 
-           $lastSale = Sale::latest('id')->first();
+           $lastSale = Sale::where('firm_id', Auth::user()->firm_id)
+           ->latest('id')->first();
 
            $nextNumber = $lastSale ? $lastSale->id + 1 : 1;
 
@@ -103,9 +115,10 @@ class SaleController extends Controller
            
            //Creating record in the sales table
            $sale = Sale::create([
+                'firm_id' => Auth::user()->firm_id,
                 'invoice_number' => $invoiceNumber,
 
-                'user_id' => 1,
+                'user_id' => Auth::id(),
 
                 'customer_name' => $validated['customer_name'] ?? null,
 
@@ -127,7 +140,8 @@ class SaleController extends Controller
             $saleSubtotal = 0;
 
             foreach($validated['items'] as $item){
-                $product = Product::findOrFail($item['product_id']);
+                $product = Product::where('firm_id', Auth::user()->firm_id)
+                ->findOrFail($item['product_id']);
 
                 $quantity = $item['quantity'];
 
@@ -171,7 +185,9 @@ class SaleController extends Controller
 
                     'reference_id' => $sale->id,
 
-                    'note' => 'Stock reduced due to sale'.$sale->invoice_number
+                    'note' => 'Stock reduced due to sale'.$sale->invoice_number,
+
+                    'firm_id' => Auth::user()->firm_id
 
                 ]);
             }
@@ -211,9 +227,11 @@ class SaleController extends Controller
 
 
     public function searchProducts(Request $request){
+
+        $firmId = Auth::user()->firm_id;
         $search = $request->search;
 
-        $products = Product::where('is_active', 1)
+        $products = Product::where('firm_id', $firmId)->where('is_active', 1)
                     ->where('stock_quantity', '>', 0)
                     ->where(function ($query) use ($search){
                         $query->where('name', 'like', "%{$search}%")
@@ -234,12 +252,21 @@ class SaleController extends Controller
     }
 
     public function invoice(Sale $sale){
+
+        if($sale->firm_id !== Auth::user()->firm_id){
+            abort(404);
+        }
         $sale->load('sale_items.product');
 
         return view('sales.invoice', compact('sale'));
     }
 
     public function cancel(Sale $sale){
+
+        if($sale->firm_id !== Auth::user()->firm_id){
+            abort(404);
+        }
+
         if($sale->status === 'cancelled'){
             return redirect()->route('sales.index')
             ->with('error', 'This sale has already been deleted');
@@ -265,7 +292,9 @@ class SaleController extends Controller
 
                     'reference_id' => $sale->id,
 
-                    'note' => 'Stock cancelled '. $sale->invoice_number
+                    'note' => 'Stock cancelled '. $sale->invoice_number,
+
+                    'firm_id' => Auth::user()->firm_id
                 ]);
             }
             $sale->update([
@@ -277,6 +306,11 @@ class SaleController extends Controller
     }
 
     public function returnForm(Sale $sale){
+
+        if($sale->firm_id !== Auth::user()->firm_id){
+            abort(404);
+        }
+
         $sale->load('sale_items.product');
         
         foreach($sale->sale_items as $saleItem){
@@ -293,12 +327,20 @@ class SaleController extends Controller
     }
 
     public function processReturn(Request $request, Sale $sale){
+
+        if($sale->firm_id !== Auth::user()->firm_id){
+            abort(404);
+        }
+
         $validated = $request->validate([
             'reason' => 'nullable|string|max:1000',
 
             'items' => 'required|array|min:1',
 
-            'items.*.sale_item_id' => 'required|exists:sale_items,id',
+            'items.*.sale_item_id' => ['required','integer',
+            Rule::exists('sale_items', 'id')
+            ->where('sale_id', $sale->id)
+            ],
 
             'items.*.quantity' => 'required|integer|min:1'
         ]);
@@ -377,7 +419,8 @@ class SaleController extends Controller
                 ]);
 
                 //Restore products 
-                $product = Product::findOrFail($saleItem->product_id);
+                $product = Product::where('firm_id', Auth::user()->firm_id)
+                ->findOrFail($saleItem->product_id);
 
                 $product->increment('stock_quantity', $returnQuantity);
 
@@ -388,7 +431,8 @@ class SaleController extends Controller
                     'type' => 'sale_return',
                     'quantity' => $returnQuantity,
                     'reference_id' => $saleReturn->id,
-                    'note' => 'Stock restored due to sales return'.$sale->invoice_number
+                    'note' => 'Stock restored due to sales return'.$sale->invoice_number,
+                    'firm_id' => Auth::user()->firm_id
                 ]);
             }
 

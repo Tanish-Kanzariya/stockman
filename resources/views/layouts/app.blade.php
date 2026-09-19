@@ -64,6 +64,10 @@
             </li>
             
             <li>
+                <a href="{{ route('stock.index') }}">Stocks</a>
+            </li>
+
+            <li>
                 <a href="">Reports</a>
             </li>
         </ul>

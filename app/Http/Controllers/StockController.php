@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Categories;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StockController extends Controller
 {
     public function index(Request $request){
 
-        $query = Product::query();
+        $firmId = Auth::user()->firm_id;
+        $query = Product::where('firm_id', $firmId);
 
         //PRODUCT NAME FILTER
         if($request->filled('search')){

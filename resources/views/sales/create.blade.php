@@ -14,7 +14,7 @@
             <p>Create a new sale and manage customer billing.</p>
         </div>
 
-        <a href="{{}}" class="btn btn-outline-secondary">
+        <a href="{{ route('sales.index') }}" class="btn btn-outline-secondary">
             <- Back to sales
         </a>
     </div>
