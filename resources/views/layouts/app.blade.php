@@ -30,48 +30,238 @@
         </div> 
         {{-- Sidebar header ends --}}
 
+    <nav class="sidebar-nav">
+
         <ul>
-            <li>
-                <a href="{{ route('dashboard') }}">Dashboard</a>
+
+            {{-- Dashboard --}}
+           <li class="nav-item dashboard-item">
+
+                <a
+                    href="{{ route('dashboard') }}"
+                    class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                >
+
+                    <span class="nav-group-left">
+
+                        <span class="nav-icon">⌂</span>
+
+                        <span class="nav-text">
+                            Dashboard
+                        </span>
+
+                    </span>
+
+                </a>
+
             </li>
 
-            <li>
-                <a href="{{ route('products.index') }}">Products</a>
+
+            {{-- SALES --}}
+            <li class="nav-group">
+
+                <button type="button" class="nav-group-toggle">
+
+                    <span class="nav-group-left">
+                        <span class="nav-icon">▣</span>
+                        <span class="nav-text">Sales</span>
+                    </span>
+
+                    <span class="nav-arrow">⌄</span>
+
+                </button>
+
+                <ul class="nav-submenu">
+
+                    <li>
+                        <a href="{{ route('sales.create') }}">
+                            <span class="nav-icon">＋</span>
+                            <span class="nav-text">New Sale</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('sales.index') }}">
+                            <span class="nav-icon">▤</span>
+                            <span class="nav-text">Sales History</span>
+                        </a>
+                    </li>
+
+                </ul>
+
             </li>
 
-            <li>
-                <a href="{{ route('categories.index') }}">Categories</a>
+
+            {{-- PURCHASE --}}
+            <li class="nav-group">
+
+                <button type="button" class="nav-group-toggle">
+
+                    <span class="nav-group-left">
+                        <span class="nav-icon">🛒</span>
+                        <span class="nav-text">Purchase</span>
+                    </span>
+
+                    <span class="nav-arrow">⌄</span>
+
+                </button>
+
+                <ul class="nav-submenu">
+
+                    <li>
+                        <a href="{{ route('purchases.index') }}">
+                            <span class="nav-icon">▤</span>
+                            <span class="nav-text">Purchases</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('supplier.index') }}">
+                            <span class="nav-icon">♟</span>
+                            <span class="nav-text">Suppliers</span>
+                        </a>
+                    </li>
+
+                </ul>
+
             </li>
 
-            <li>
-                <a href="{{ route('supplier.index') }}">Suppliers</a>
+
+            {{-- INVENTORY --}}
+            <li class="nav-group">
+
+                <button type="button" class="nav-group-toggle">
+
+                    <span class="nav-group-left">
+                        <span class="nav-icon">▦</span>
+                        <span class="nav-text">Inventory</span>
+                    </span>
+
+                    <span class="nav-arrow">⌄</span>
+
+                </button>
+
+                <ul class="nav-submenu">
+
+                    <li>
+                        <a href="{{ route('products.index') }}">
+                            <span class="nav-icon">▣</span>
+                            <span class="nav-text">Products</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('categories.index') }}">
+                            <span class="nav-icon">▦</span>
+                            <span class="nav-text">Categories</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('stock.index') }}">
+                            <span class="nav-icon">▤</span>
+                            <span class="nav-text">Stock Management</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('stockMovements') }}">
+                            <span class="nav-icon">↕</span>
+                            <span class="nav-text">Stock Movements</span>
+                        </a>
+                    </li>
+
+                </ul>
+
             </li>
 
-            <li>
-                <a href="{{ route('purchases.index') }}">Purchases</a>
+
+            {{-- REPORTS --}}
+            <li class="nav-group">
+
+                <button type="button" class="nav-group-toggle">
+
+                    <span class="nav-group-left">
+                        <span class="nav-icon">▥</span>
+                        <span class="nav-text">Reports</span>
+                    </span>
+
+                    <span class="nav-arrow">⌄</span>
+
+                </button>
+
+                <ul class="nav-submenu">
+
+                    <li>
+                        <a href="{{ route('reports.sales') }}">
+                            <span class="nav-icon">▤</span>
+                            <span class="nav-text">Sales Report</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('reports.product-sales') }}">
+                            <span class="nav-icon">▦</span>
+                            <span class="nav-text">Product Sales</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('reports.profit') }}">
+                            <span class="nav-icon">₹</span>
+                            <span class="nav-text">Profit Report</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('reports.purchase') }}">
+                            <span class="nav-icon">▣</span>
+                            <span class="nav-text">Purchase Report</span>
+                        </a>
+                    </li>
+
+                </ul>
+
             </li>
 
-            <li>
-                <a href="{{ route('sales.create') }}">New Sale</a>
+
+            {{-- SYSTEM --}}
+            <li class="nav-group">
+
+                <button type="button" class="nav-group-toggle">
+
+                    <span class="nav-group-left">
+                        <span class="nav-icon">⚙</span>
+                        <span class="nav-text">System</span>
+                    </span>
+
+                    <span class="nav-arrow">⌄</span>
+
+                </button>
+
+                <ul class="nav-submenu">
+
+                    <li>
+                        <a href="#">
+                            <span class="nav-icon">⚙</span>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span class="nav-icon">◉</span>
+                            <span class="nav-text">Profile</span>
+                        </a>
+                    </li>
+
+                </ul>
+
             </li>
 
-            <li>
-                <a href="{{ route('sales.index') }}">Sales</a>
-            </li>
-
-            <li>
-                <a href="{{ route('stockMovements') }}">Stock Movements</a>
-            </li>
-            
-            <li>
-                <a href="{{ route('stock.index') }}">Stocks</a>
-            </li>
-
-            <li>
-                <a href="">Reports</a>
-            </li>
         </ul>
 
+    </nav>
     </aside>    {{-- Aside over --}}
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div> {{-- Sidebar Overlay --}}
@@ -83,11 +273,21 @@
 
             <div class="header-left">
 
+                <button
+                    class="desktop-sidebar-toggle"
+                    id="desktopSidebarToggle"
+                    type="button"
+                    title="Collapse sidebar"
+                >
+                    ☰
+                </button>
+
+
                 <button class="sidebar-toggle" id="sidebarToggle">
                     ☰
                 </button>
 
-                <h2>Stock Management System</h2>
+                {{-- <h2>Stock Management System</h2> --}}
 
             </div>
 
@@ -120,6 +320,10 @@
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const sidebarClose = document.getElementById('sidebarClose');
+    const navGroupToggle = document.querySelectorAll('.nav-group-toggle');
+
+
+    const desktopSidebarToggle = document.getElementById('desktopSidebarToggle')
 
     sidebarToggle.addEventListener('click',()=>{
         sidebar.classList.add('active');
@@ -135,6 +339,25 @@
         sidebar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
     });
+
+    desktopSidebarToggle.addEventListener('click', ()=>{
+        sidebar.classList.toggle('collapsed');
+    });
+
+    navGroupToggle.forEach(toggle => {
+        toggle.addEventListener('click', ()=>{
+            const currentGroup = toggle.closest('.nav-group');
+
+            document.querySelectorAll('.nav-group').forEach(group=>{
+                if(group !== currentGroup){
+                    group.classList.remove('open');
+                }
+            })
+
+            currentGroup.classList.toggle('open');
+        });
+    });
+
    </script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
