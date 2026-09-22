@@ -56,7 +56,7 @@ class SupplierController extends Controller
     }
 
     public function delete($id){
-        $supplier = Supplier::where('firm_id', Auth::user()->id)
+        $supplier = Supplier::where('firm_id', Auth::user()->firm_id)
         ->findOrFail($id);
 
         if($supplier->purchases()->exists()){

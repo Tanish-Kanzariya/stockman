@@ -36,6 +36,6 @@ class Product extends Model
     }
 
     public function firm(){
-        return $this->belongsTo('Firm::class');
+        return $this->belongsTo(Firm::class);
     }
 }

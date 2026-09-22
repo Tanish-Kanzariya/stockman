@@ -74,7 +74,7 @@ class PurchaseController extends Controller
     public function show(Purchase $purchase){
         // $purchase = Purchase::with(['suppliers','items.product'])->findOrFail($id);
 
-        if($purchase->firm_id !== Auth::user()->firm_id){
+        if((int)$purchase->firm_id !== (int) Auth::user()->firm_id){
             abort(404);
         }
 
@@ -84,7 +84,7 @@ class PurchaseController extends Controller
 
     public function cancel(Purchase $purchase){
 
-    if($purchase->firm_id !== Auth::user()->firm_id){
+    if((int) $purchase->firm_id !== (int) Auth::user()->firm_id){
         abort(404);
     }
         
@@ -98,7 +98,7 @@ class PurchaseController extends Controller
 
              foreach($purchase->items as $item){
             $product = Product::where('firm_id', Auth::user()->firm_id)
-            ->find($item->product_id);
+            ->findOrFail($item->product_id);
 
            
 
@@ -172,9 +172,12 @@ class PurchaseController extends Controller
         $latestPurchase = Purchase::where('firm_id', Auth::user()->firm_id)
         ->latest('id')->first();
 
-        $nextNum = $latestPurchase ? $latestPurchase->id + 1 : 1;
+        $nextNum = $latestPurchase ?
+            ((int) preg_replace('/[^0-9]/', '', $latestPurchase->invoice_number)) + 1
+            : 1
+        ;
 
-        $invoiceNumber = 'INV-'.str_pad($nextNum,4,'0',STR_PAD_LEFT);
+        $invoiceNumber = 'PINV-'.str_pad($nextNum,4,'0',STR_PAD_LEFT);
 
         DB::transaction(function () use ($validated, $invoiceNumber, $items){
 

@@ -30,7 +30,8 @@ class CategoriesController extends Controller
     public function create(?int $id = null){
         if($id){
 
-            $category = Categories::findOrFail($id);
+            $category = Categories::where('firm_id', Auth::user()->firm_id)
+            ->findOrFail($id);
             return view('categories.create', compact('category'));
         }
 
@@ -42,7 +43,7 @@ class CategoriesController extends Controller
             'name' => 'required|string',
         ]);
 
-        $validated['firm_id'] = Auth::user()->id;
+        $validated['firm_id'] = Auth::user()->firm_id;
 
         $categories = Categories::create($validated);
 
@@ -54,6 +55,9 @@ class CategoriesController extends Controller
 
     public function update(Categories $category, Request $request){
 
+        if((int) $category->firm_id !== (int) Auth::user()->firm_id){
+            abort(404);
+        }
 
         $validated = $request->validate([
             'name' => 'required|string|max:100'

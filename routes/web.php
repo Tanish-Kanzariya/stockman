@@ -39,10 +39,10 @@ Route::post('/login', [AuthController::class, 'authenticate'])
 
 Route::middleware('auth')->group(function(){
 
-    Route::get('/products', function(){
-    $products = Product::all();
-    return $products;
-    });
+    // Route::get('/products', function(){
+    // $products = Product::all();
+    // return $products;
+    // });
 
     Route::get('/products',[ProductController::class,'showProducts'])->name('products.index');
 
@@ -74,11 +74,11 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/create/supplier/{id?}',[SupplierController::class,'create'])->name('supplier.create');
 
-    Route::POST('/store/supplier',[SupplierController::class,'store'])->name('supplier.store');
+    Route::post('/store/supplier',[SupplierController::class,'store'])->name('supplier.store');
 
-    Route::POST('/supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
+    Route::post('/supplier/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
 
-    Route::POST('/supplier/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
+    Route::post('/supplier/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
 
     Route::get('/stock-movements/', [StockMovementController::class,'index'])->name('stockMovements');
 
@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.searchProducts');
 
-    Route::POST('/sales',[SaleController::class,'store'])->name('sales.store');
+    Route::post('/sales',[SaleController::class,'store'])->name('sales.store');
 
     Route::get('/sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
 

@@ -103,7 +103,7 @@ class ProductController extends Controller
     }
     public function singleProduct(Product $product){
         // $product = Product::find($id);
-        if ($product->firm_id !== Auth::user()->firm_id) {
+        if ((int) $product->firm_id !== (int) Auth::user()->firm_id) {
         abort(404);
         }
 
@@ -127,7 +127,10 @@ class ProductController extends Controller
 
         $validated = $req->validate([
             'name' => 'required|string|max:200',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => ['required', 'integer',
+                Rule::exists('categories', 'id')
+                ->where('firm_id', Auth::user()->firm_id)
+            ],
             // 'sku' => 'required|string|unique:products,sku',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',

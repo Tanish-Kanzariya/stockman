@@ -153,7 +153,7 @@
                 <span>Total Revenue</span>
 
                 <h2>
-                    ₹{{ number_format($totalRevenue, 2) }}
+                    ₹{{ number_format($totalCollected, 2) }}
                 </h2>
 
             </div>

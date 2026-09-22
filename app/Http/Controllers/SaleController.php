@@ -108,9 +108,12 @@ class SaleController extends Controller
            $date = now()->format('Ymd');
 
            $lastSale = Sale::where('firm_id', $firmId)
+           ->where('invoice_number', 'like', "INV-{$date}-%")
+           ->orderByDesc('id')
            ->latest('id')->first();
 
-           $nextNumber = $lastSale ? $lastSale->id + 1 : 1;
+           $nextNumber = $lastSale ?
+           ((int) substr($lastSale->invoice_number, -4)) +1 : 1;
 
            $invoiceNumber = "INV-".$date."-".str_pad($nextNumber,4,'0',STR_PAD_LEFT);
 
@@ -264,7 +267,7 @@ class SaleController extends Controller
 
     public function cancel(Sale $sale){
 
-        if($sale->firm_id !== Auth::user()->firm_id){
+        if((int) $sale->firm_id !== (int) Auth::user()->firm_id){
             abort(404);
         }
 
@@ -308,7 +311,7 @@ class SaleController extends Controller
 
     public function returnForm(Sale $sale){
 
-        if($sale->firm_id !== Auth::user()->firm_id){
+        if((int) $sale->firm_id !== (int) Auth::user()->firm_id){
             abort(404);
         }
 
@@ -329,7 +332,7 @@ class SaleController extends Controller
 
     public function processReturn(Request $request, Sale $sale){
 
-        if($sale->firm_id !== Auth::user()->firm_id){
+        if((int) $sale->firm_id !== (int) Auth::user()->firm_id){
             abort(404);
         }
 
@@ -379,7 +382,7 @@ class SaleController extends Controller
                 if($returnQuantity > $returnableQuantity){
                     return response()->json([
                         'success' => false,
-                        'message' => 'Cannot return more than {$returnableQuantity}'
+                        'message' => "Cannot return more than {$returnableQuantity}"
                     ]);
                 }
 

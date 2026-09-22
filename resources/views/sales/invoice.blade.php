@@ -23,7 +23,7 @@
                     <h1>StockMan</h1>
                     <p>Smart Stock Management System</p>
                 </div>
-
+                
             </div>
 
 
