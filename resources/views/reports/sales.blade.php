@@ -228,6 +228,7 @@
                 <thead>
 
                     <tr>
+                        <th>#</th>
                         <th>Invoice</th>
                         <th>Customer</th>
                         <th>Subtotal</th>
@@ -242,10 +243,15 @@
 
 
                 <tbody>
-
+                    @php
+                        $i = 0;
+                    @endphp
                     @forelse($sales as $sale)
-
+                        @php
+                            $i++;
+                        @endphp
                         <tr>
+                            <td>{{ $i }}</td>
 
                             <td>
                                 <strong>

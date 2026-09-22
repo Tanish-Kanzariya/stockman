@@ -15,13 +15,19 @@
 
             <div class="company-section">
 
-                <div class="company-logo">
+                {{-- <div class="company-logo">
                     SM
-                </div>
+                </div> --}}
 
                 <div>
-                    <h1>StockMan</h1>
-                    <p>Smart Stock Management System</p>
+                    <h1>{{ $sale->firm->name }}</h1>
+                    {{-- <p>Smart Stock Management System</p> --}}
+
+                    @if($sale->firm && $sale->firm->gstin)
+                    <p class="company-gstin">
+                        GSTIN: {{ $sale->firm->gstin }}
+                    </p>
+                    @endif  
                 </div>
                 
             </div>
@@ -193,7 +199,7 @@
                 <h5>Thank you for your purchase! ❤️</h5>
 
                 <p>
-                    Thank you for choosing StockMan.
+                    Thank you for choosing {{ $sale->firm->name }}.
                     Please keep this invoice for your records.
                 </p>
 

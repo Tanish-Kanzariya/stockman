@@ -233,7 +233,10 @@
         <table class="table stock-table table-hover align-middle" id="stock-table">
             <thead class="table-light">
                 <tr>
+                    <th>#</th>
                     <th>Product</th>
+                    <th>SKU</th>
+                    <th>Category</th>
                     <th>Stock</th>
                     <th>Minimum Stock</th>
                     <th>Purchase Price</th>
@@ -242,6 +245,9 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $i = 0;
+                @endphp
                 @forelse ($products as $product)
                 @php
                     $stockValue = $product->stock_quantity * $product->purchase_price;
@@ -253,9 +259,22 @@
                     }else {
                         $stockStatus = 'In stock';
                     }
+
+                    $i++;
                 @endphp
                     <tr>
+                        <td>{{ $i }}</td>
                         <td>{{ $product->name }}</td>
+                        <th>
+                            <span class="text-muted fw-1">
+                                {{ $product->sku }}
+                            </span>    
+                        </th>
+                        <th>
+                            <span>
+                                {{ $product->Categories->name }}
+                            </span>    
+                        </th>
                         <td>{{ $product->stock_quantity }}</td>
                         <td>{{ $product->minimum_stock }}</td>
                         <td>₹{{ number_format($product->purchase_price,2) }}</td>

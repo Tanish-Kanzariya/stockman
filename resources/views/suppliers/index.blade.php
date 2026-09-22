@@ -71,6 +71,7 @@
 
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Email</th>
@@ -80,11 +81,15 @@
                 </thead>
 
                 <tbody>
-
+                    @php
+                        $i = 0;
+                    @endphp
                     @forelse ($suppliers as $supplier)
-
+                    @php
+                        $i++;
+                    @endphp
                         <tr>
-
+                            <td>{{ $i }}</td>
                             <td>
                                 <div class="supplier-name">
                                     {{ $supplier->name }}

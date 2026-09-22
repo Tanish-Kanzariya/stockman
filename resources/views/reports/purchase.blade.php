@@ -223,6 +223,7 @@
                 <thead>
 
                     <tr>
+                        <th>#</th>
 
                         <th>Invoice</th>
 
@@ -240,10 +241,16 @@
 
 
                 <tbody>
-
+                    @php
+                        $i = 0;
+                    @endphp
                     @forelse($purchases as $purchase)
-
+                    @php
+                        $i++;
+                    @endphp
                         <tr>
+
+                            <td>{{ $i }}</td>
 
                             {{-- Invoice --}}
                             <td>

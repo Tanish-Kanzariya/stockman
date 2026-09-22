@@ -21,12 +21,12 @@ class ReportController extends Controller
             ->where('firm_id', $firmId)
             ->where('status', 'completed');
 
-        if ($request->filled('from')) {
-            $query->whereDate('created_at', '>=', $request->from);
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
         }
 
-        if ($request->filled('to')) {
-            $query->whereDate('created_at', '<=', $request->to);
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
         }
 
 

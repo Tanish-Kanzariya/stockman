@@ -48,10 +48,14 @@ class StockMovementController extends Controller
         $totalMovements = StockMovement::where('firm_id', $firmId)->count();
 
         $stockAdded = StockMovement::where('firm_id', $firmId)
-        ->where('quantity', '>', 0)->sum('quantity');
+        ->whereIn('type',[
+            'purchase',
+            'sale_return',
+            'sale_cancel'
+        ])->sum('quantity');
 
         $stockReduced = StockMovement::where('firm_id', $firmId)
-        ->where('quantity', '<', 0)->sum('quantity');
+        ->where('type', 'sale')->sum('quantity');
 
         $todaysMovement = StockMovement::where('firm_id', $firmId)
         ->whereDate('created_at', today())->count();

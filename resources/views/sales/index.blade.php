@@ -203,10 +203,13 @@
                 <table class="table sale-items-table">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Invoice Number</th>
                             <th>Customer</th>
-                            <th>Total Amount</th>
-                            <th>Payment</th>
+                            <th>Original</th>
+                            <th>Returned</th>
+                            <th>Net Amount</th>
+                            <th>Payment Method</th>
                             <th>Status</th>
                             <th>Date</th>
                             <th class="text-end">Action</th>
@@ -214,8 +217,15 @@
                     </thead>
 
                     <tbody>
+                        @php
+                            $i = 0;
+                        @endphp
                         @forelse ($sales as $sale)
+                        @php
+                            $i++;
+                        @endphp
                             <tr>
+                                <td>{{ $i }}</td>
 
                                 {{-- Invoice --}}
                                 <td>
@@ -237,9 +247,28 @@
                                     @endif
                                 </td>
 
-                                {{-- Total Amount --}}
+                                {{-- Original Amount --}}
                                 <td>
                                     ₹{{ number_format($sale->total_amount,2) }}
+                                </td>
+
+                                {{-- Returned Amount --}}
+                                <td>
+                                    @if($sale->returned_amount > 0)
+                                        <span>
+                                            -₹{{ number_format($sale->returned_amount,2) }}
+                                        </span>
+                                    @else
+                                        ₹0.00
+                                    @endif
+                                </td>
+
+                                {{-- Net Amount --}}
+
+                                <td>
+                                    <strong>
+                                    ₹{{ number_format($sale->total_amount - $sale->returned_amount,2) }}
+                                    </strong>
                                 </td>
 
                                 {{-- Payment --}}
@@ -299,7 +328,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">
+                                <td colspan="9" class="text-center py-4 text-muted">
                                     No Sales Found.
                                 </td>
                             </tr>

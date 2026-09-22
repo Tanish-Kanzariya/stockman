@@ -205,6 +205,7 @@
                 <table class="table stock-movement-table align-middle mb-0">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Product</th>
                             <th>Type</th>
                             <th>Quantity</th>
@@ -215,8 +216,17 @@
                     </thead>
 
                     <tbody>
+                        @php
+                            $i = 0;
+                        @endphp
                         @forelse ($stockMovements as $stock)
+
+                        @php
+                            $i++;
+                        @endphp
                             <tr>
+
+                                <td>{{ $i }}</td>
                                 {{-- Product name --}}
                                 <td>
                                     <span class="product-name">

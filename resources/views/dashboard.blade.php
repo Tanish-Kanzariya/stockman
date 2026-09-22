@@ -78,7 +78,7 @@
             </div>
 
             <div class="kpi-footer">
-                Gross profit generated today
+                Net profit generated today
             </div>
         </div>
 

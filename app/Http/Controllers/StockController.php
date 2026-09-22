@@ -20,7 +20,9 @@ class StockController extends Controller
         }
 
         //CATEGORIES FILTER
-        $categories = Categories::all();
+        $categories = Categories::where('firm_id', Auth::user()->firm_id)
+        ->orderBy('name')
+        ->get();
 
         if($request->filled('category')){
             $query->where('category_id', $request->category);

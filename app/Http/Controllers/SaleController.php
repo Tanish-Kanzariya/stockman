@@ -20,7 +20,14 @@ class SaleController extends Controller
 
         $firmId = Auth::user()->firm_id;
 
-        $query = Sale::where('firm_id', $firmId)->with('sale_items.product');
+        $query = Sale::where('firm_id', $firmId)->with('sale_items.product')
+        ->withSum([
+
+            'sale_return as returned_amount' => function($q){
+                $q->where('status', 'completed');
+            }
+
+        ],'refund_amount');
 
         //Search by invoice, customer name and phone number
         if($request->filled('search')){
@@ -53,7 +60,16 @@ class SaleController extends Controller
         ->where('status', 'completed')->count();
 
         $totalRevenue = Sale::where('firm_id', $firmId)
-        ->where('status', 'completed')->sum('total_amount');
+        ->where('status', 'completed')
+        ->sum('total_amount');
+
+        $returnedRevenue = Sale_return::where('status', 'completed')
+    ->whereHas('sale', function ($query) use ($firmId) {
+        $query->where('firm_id', $firmId);
+    })
+    ->sum('refund_amount');
+
+    $totalRevenue -= $returnedRevenue;
 
         $todaysSales = Sale::where('firm_id', $firmId)
         ->where('status', 'completed')
@@ -64,6 +80,7 @@ class SaleController extends Controller
         ->where('status', 'cancelled')->count();
 
         $sales = $query->latest()->paginate(10)->withQueryString()->fragment('saleCardBody');
+
 
         return view('sales.index',compact('sales',
                                             'totalSales',
@@ -260,7 +277,7 @@ class SaleController extends Controller
         if((int)$sale->firm_id !== (int)Auth::user()->firm_id){
             abort(404);
         }
-        $sale->load('sale_items.product');
+        $sale->load('sale_items.product','firm');
 
         return view('sales.invoice', compact('sale'));
     }

@@ -156,6 +156,7 @@
         <table class="table purchase-table align-middle mb-0" id="purchase-table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Invoice</th>
                     <th>Supplier</th>
                     <th>Date</th>
@@ -165,8 +166,16 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($purchases as $purchase)        
+                @php
+                    $i = 0;
+                @endphp
+                @forelse ($purchases as $purchase)      
+                @php
+                    $i++;
+                @endphp  
                 <tr>
+
+                    <td>{{ $i }}</td>
                     {{-- Invoice --}}
                     <td>
                         <span class="purchase-invoice">
