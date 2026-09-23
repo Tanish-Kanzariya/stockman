@@ -503,15 +503,13 @@ body{
    ACTIVE LINK
    ----------------------------------------- */
 
-.sidebar-nav a.active {
+.sidebar-nav button.active {
     background: rgba(255, 255, 255, 0.10);
     color: #ffffff;
 }
 
 
-/* -----------------------------------------
-   COLLAPSED DESKTOP SIDEBAR
-   ----------------------------------------- */
+   /* COLLAPSED DESKTOP SIDEBAR */
 
 .sidebar.collapsed {
     width: 75px;
@@ -552,9 +550,7 @@ body{
 }
 
 
-/* -----------------------------------------
-   MOBILE
-   ----------------------------------------- */
+   /* MOBILE */
 
 @media (max-width: 992px) {
 
@@ -629,4 +625,60 @@ body{
 .sidebar-nav .dashboard-item > a.active {
     background: rgba(255, 255, 255, 0.10);
     color: #ffffff;
+}
+
+.firm-header-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.welcome-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #374151;
+    font-size: 14px;
+}
+
+.welcome-text strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.firm-header-logo a{
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.firm-header-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 576px) {
+
+    .firm-header-info {
+        gap: 8px;
+    }
+
+    .welcome-text {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+        font-size: 12px;
+    }
+
+    .firm-header-logo {
+        width: 36px;
+        height: 36px;
+    }
 }

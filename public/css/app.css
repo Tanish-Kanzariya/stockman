@@ -78,6 +78,8 @@
         color:#ffffff;
         text-decoration: none;
         border-radius: 6px;
+        display: flex;
+        align-items: center;
     }
 
     /* .sidebar a:hover{

@@ -8,7 +8,8 @@ class Firm extends Model
 {
     protected $fillable=[
         'name',
-        'gstin'
+        'gstin',
+        'logo'
     ];
 
     public function users(){

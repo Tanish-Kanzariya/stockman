@@ -272,8 +272,8 @@
 
             {{-- SYSTEM --}}
             <li class="nav-group">
-
-                <button type="button" class="nav-group-toggle">
+                <button type="button" class="nav-group-toggle"
+                >
 
                     <span class="nav-group-left">
                         <span class="nav-icon">
@@ -284,14 +284,16 @@
 
                     <span class="nav-arrow">
                         <i class="ti ti-chevron-down"></i>
-                    </span>
+                    </span> 
 
                 </button>
 
+ 
                 <ul class="nav-submenu">
 
                     <li>
-                        <a href="#">
+                        <a href="{{ route('settings.index') }}"
+                        >
                             <span class="nav-icon">
                                 <i class="ti ti-settings-spark"></i>
                             </span>
@@ -300,7 +302,7 @@
                     </li>
 
                     <li>
-                        <a href="#">
+                        <a href="{{ route('profile.index') }}">
                             <span class="nav-icon">
                                 <i class="ti ti-user-circle"></i>   
                             </span>
@@ -310,6 +312,28 @@
 
                 </ul>
 
+            </li>
+
+            <li class="nav-group">
+                <button class="nav-group-toggle" type="button">
+
+                <span class="nav-group-left">
+                    <span class="nav-icon">
+                        <i class="ti ti-logout-2"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+
+                            <button type="submit">
+                                Logout
+                            </button>
+                        </form>
+                    </span>
+                </span>
+                </button>
+                
             </li>
 
         </ul>
@@ -345,18 +369,30 @@
             </div>
 
             <div class="admin">
-                Welcome,
-                <a href="#">
-                    {{ Auth::user()->name }}
-                </a>
 
-            <form action="{{ route('logout') }}" method="POST">
+                <div class="firm-header-info">
+                    <div class="welcome-text">
+                        <span>Welcome, {{ Auth::user()->firm->name }}</span>
+                    </div>
+
+                    @if(Auth::user()->firm->logo)
+                        <div class="firm-header-logo">
+                            <a href="{{ route('settings.index') }}">
+                            <img src="{{ asset('storage/'. Auth::user()->firm->logo) }}"
+                             alt="Logo">
+                             </a>
+                        </div>
+                    @endif
+                </div>
+               
+
+            {{-- <form action="{{ route('logout') }}" method="POST">
                 @csrf
 
                 <button type="submit">
                     Logout
                 </button>
-            </form>
+            </form> --}}
             </div>
             
 

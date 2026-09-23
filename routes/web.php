@@ -4,8 +4,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportController;
+// use App\Http\Controllers\settingsController;
+use App\Http\Controllers\settingsController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StockMovementController;
@@ -118,5 +121,13 @@ Route::middleware('auth')->group(function(){
     Route::get('/categories',[CategoriesController::class, 'index'])->name('categories.index');
 
     Route::post('/categories/{category}/update', [CategoriesController::class, 'update'])->name('categories.update');
+
+    Route::get('/settings', [settingsController::class, 'index'])->name('settings.index');
+
+    Route::post('/settings', [settingsController::class,'update'])->name('settings.update');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 });
