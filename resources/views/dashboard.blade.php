@@ -10,7 +10,7 @@
     <div class="dashboard-header">
         <div>
             <h1>Dashboard</h1>
-            <p>Welcome to stockman</p>
+            {{-- <p>Welcome to stockman</p> --}}
         </div>
     </div>
 

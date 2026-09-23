@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content = "{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.48.0/tabler-icons.min.css" integrity="sha512-FpfjSBRmQDu3MAAZrjj8j+RwvbASPc9f+gpd2pF/sHXPWPeTbd1OmXpC7CYt+Nnb6kD+Ed0fFH366YcAoV9LNA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @yield('styles')
@@ -19,7 +20,9 @@
         <div class="sidebar-header">
 
             <div class="logo">
-                StockMan
+                <a href="{{ route('dashboard') }}">
+                    StockMan
+                </a>
             </div>
 
             <button class="sidebar-close" id="sidebarClose">
@@ -44,7 +47,9 @@
 
                     <span class="nav-group-left">
 
-                        <span class="nav-icon">⌂</span>
+                        <span class="nav-icon">
+                            <i class="ti ti-home"></i>
+                        </span>
 
                         <span class="nav-text">
                             Dashboard
@@ -63,11 +68,15 @@
                 <button type="button" class="nav-group-toggle">
 
                     <span class="nav-group-left">
-                        <span class="nav-icon">▣</span>
+                        <span class="nav-icon">
+                            <i class="ti ti-receipt-rupee"></i>
+                        </span>
                         <span class="nav-text">Sales</span>
                     </span>
 
-                    <span class="nav-arrow">⌄</span>
+                    <span class="nav-arrow">
+                        <i class="ti ti-chevron-down"></i>
+                    </span>
 
                 </button>
 
@@ -75,14 +84,18 @@
 
                     <li>
                         <a href="{{ route('sales.create') }}">
-                            <span class="nav-icon">＋</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-plus"></i>
+                            </span>
                             <span class="nav-text">New Sale</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('sales.index') }}">
-                            <span class="nav-icon">▤</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-history"></i>
+                            </span>
                             <span class="nav-text">Sales History</span>
                         </a>
                     </li>
@@ -98,11 +111,15 @@
                 <button type="button" class="nav-group-toggle">
 
                     <span class="nav-group-left">
-                        <span class="nav-icon">🛒</span>
+                        <span class="nav-icon">
+                            <i class="ti ti-truck-loading"></i>
+                        </span>
                         <span class="nav-text">Purchase</span>
                     </span>
 
-                    <span class="nav-arrow">⌄</span>
+                    <span class="nav-arrow">
+                        <i class="ti ti-chevron-down"></i>
+                    </span>
 
                 </button>
 
@@ -110,14 +127,18 @@
 
                     <li>
                         <a href="{{ route('purchases.index') }}">
-                            <span class="nav-icon">▤</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-backpack"></i>
+                            </span>
                             <span class="nav-text">Purchases</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('supplier.index') }}">
-                            <span class="nav-icon">♟</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-truck-delivery"></i>
+                            </span>
                             <span class="nav-text">Suppliers</span>
                         </a>
                     </li>
@@ -133,11 +154,15 @@
                 <button type="button" class="nav-group-toggle">
 
                     <span class="nav-group-left">
-                        <span class="nav-icon">▦</span>
+                        <span class="nav-icon">
+                            <i class="ti ti-tools"></i>
+                        </span>
                         <span class="nav-text">Inventory</span>
                     </span>
 
-                    <span class="nav-arrow">⌄</span>
+                    <span class="nav-arrow">
+                        <i class="ti ti-chevron-down"></i>
+                    </span>
 
                 </button>
 
@@ -145,28 +170,36 @@
 
                     <li>
                         <a href="{{ route('products.index') }}">
-                            <span class="nav-icon">▣</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-package"></i>
+                            </span>
                             <span class="nav-text">Products</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('categories.index') }}">
-                            <span class="nav-icon">▦</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-category"></i>
+                            </span>
                             <span class="nav-text">Categories</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('stock.index') }}">
-                            <span class="nav-icon">▤</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-augmented-reality"></i>
+                            </span>
                             <span class="nav-text">Stock Management</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('stockMovements') }}">
-                            <span class="nav-icon">↕</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-arrows-transfer-up-down"></i>
+                            </span>
                             <span class="nav-text">Stock Movements</span>
                         </a>
                     </li>
@@ -182,11 +215,15 @@
                 <button type="button" class="nav-group-toggle">
 
                     <span class="nav-group-left">
-                        <span class="nav-icon">▥</span>
+                        <span class="nav-icon">
+                            <i class="ti ti-chart-bar-popular"></i>
+                        </span>
                         <span class="nav-text">Reports</span>
                     </span>
 
-                    <span class="nav-arrow">⌄</span>
+                    <span class="nav-arrow">
+                        <i class="ti ti-chevron-down"></i>
+                    </span>
 
                 </button>
 
@@ -194,28 +231,36 @@
 
                     <li>
                         <a href="{{ route('reports.sales') }}">
-                            <span class="nav-icon">▤</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-report-analytics"></i>
+                            </span>
                             <span class="nav-text">Sales Report</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('reports.product-sales') }}">
-                            <span class="nav-icon">▦</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-packages"></i>
+                            </span>
                             <span class="nav-text">Product Sales</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('reports.profit') }}">
-                            <span class="nav-icon">₹</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-arrow-big-up-line"></i>
+                            </span>
                             <span class="nav-text">Profit Report</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('reports.purchase') }}">
-                            <span class="nav-icon">▣</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-basket-check"></i>
+                            </span>
                             <span class="nav-text">Purchase Report</span>
                         </a>
                     </li>
@@ -231,11 +276,15 @@
                 <button type="button" class="nav-group-toggle">
 
                     <span class="nav-group-left">
-                        <span class="nav-icon">⚙</span>
+                        <span class="nav-icon">
+                            <i class="ti ti-settings"></i>
+                        </span>
                         <span class="nav-text">System</span>
                     </span>
 
-                    <span class="nav-arrow">⌄</span>
+                    <span class="nav-arrow">
+                        <i class="ti ti-chevron-down"></i>
+                    </span>
 
                 </button>
 
@@ -243,14 +292,18 @@
 
                     <li>
                         <a href="#">
-                            <span class="nav-icon">⚙</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-settings-spark"></i>
+                            </span>
                             <span class="nav-text">Settings</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="#">
-                            <span class="nav-icon">◉</span>
+                            <span class="nav-icon">
+                                <i class="ti ti-user-circle"></i>   
+                            </span>
                             <span class="nav-text">Profile</span>
                         </a>
                     </li>
@@ -293,7 +346,9 @@
 
             <div class="admin">
                 Welcome,
-                {{ Auth::user()->name }}
+                <a href="#">
+                    {{ Auth::user()->name }}
+                </a>
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

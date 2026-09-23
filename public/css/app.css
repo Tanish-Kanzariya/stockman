@@ -17,6 +17,13 @@
 
     .admin{
         color:#555;
+        font-weight: 600;
+    }
+
+    .admin a{
+        color:#2969b8;
+        text-decoration: none;
+        font-weight: 600;
     }
 
 
@@ -68,15 +75,15 @@
     .sidebar a{
         display: block;
         padding:12px 10px;
-        color:#d1d5db;
+        color:#ffffff;
         text-decoration: none;
         border-radius: 6px;
     }
 
-    .sidebar a:hover{
+    /* .sidebar a:hover{
         background: #374151;
         color:white;
-    }
+    } */
 
 
 /* Sidebar Header */

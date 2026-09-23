@@ -177,7 +177,7 @@ class PurchaseController extends Controller
             : 1
         ;
 
-        $invoiceNumber = 'PINV-'.str_pad($nextNum,4,'0',STR_PAD_LEFT);
+        $invoiceNumber = 'PINV-'.str_pad($nextNum,4,'0',STR_PAD_LEFT).'-'.Auth::user()->firm_id;
 
         DB::transaction(function () use ($validated, $invoiceNumber, $items){
 
