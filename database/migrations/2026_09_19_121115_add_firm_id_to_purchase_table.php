@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+       Schema::table('purchases', function (Blueprint $table) {
+            $table->unsignedBigInteger('firm_id')
+                ->nullable()
+                ->after('id');
+        });
+
         Schema::table('purchases', function (Blueprint $table) {
             $table->foreign('firm_id')
-            ->references('id')
-            ->on('firms')
-            ->nullable()
-            ->nullOnDelete();
+                ->references('id')
+                ->on('firms')
+                ->nullOnDelete();
         });
     }
 
