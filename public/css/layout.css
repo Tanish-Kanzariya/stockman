@@ -264,9 +264,7 @@ body{
 }
 
 
- /* =========================================
-   STOCKMAN SIDEBAR NAVIGATION
-   ========================================= */
+   /* STOCKMAN SIDEBAR NAVIGATION */
 
 .sidebar-nav {
     width: 100%;
@@ -291,9 +289,7 @@ body{
 }
 
 
-/* -----------------------------------------
-   NORMAL LINK
-   ----------------------------------------- */
+   /* NORMAL LINK */
 
 .sidebar-nav a {
     display: flex;
@@ -325,9 +321,7 @@ body{
 }
 
 
-/* -----------------------------------------
-   ICON
-   ----------------------------------------- */
+   /* ICON */
 
 .sidebar-nav .nav-icon {
     width: 24px;
@@ -344,9 +338,7 @@ body{
 }
 
 
-/* -----------------------------------------
-   HOVER
-   ----------------------------------------- */
+   /* HOVER */
 
 .sidebar-nav a:hover,
 .sidebar-nav .nav-group-toggle:hover {
@@ -355,9 +347,7 @@ body{
 }
 
 
-/* -----------------------------------------
-   PARENT MENU
-   ----------------------------------------- */
+   /* PARENT MENU */
 
 .sidebar-nav .nav-group {
     margin: 16px 0 !important;
@@ -419,9 +409,7 @@ body{
 }
 
 
-/* -----------------------------------------
-   SUBMENU
-   ----------------------------------------- */
+   /* SUBMENU */
 
 .sidebar-nav .nav-submenu {
     max-height: 0;
@@ -485,9 +473,7 @@ body{
 }
 
 
-/* -----------------------------------------
-   OPEN PARENT
-   ----------------------------------------- */
+   /* OPEN PARENT */
 
 .sidebar-nav .nav-group.open > .nav-group-toggle {
     background: rgba(255, 255, 255, 0.06);
@@ -499,11 +485,9 @@ body{
 }
 
 
-/* -----------------------------------------
-   ACTIVE LINK
-   ----------------------------------------- */
+   /* ACTIVE LINK */
 
-.sidebar-nav button.active {
+.sidebar-nav button.active , .sidebar-nav a.active{
     background: rgba(255, 255, 255, 0.10);
     color: #ffffff;
 }

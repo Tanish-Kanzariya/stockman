@@ -63,7 +63,7 @@
 
 
             {{-- SALES --}}
-            <li class="nav-group">
+            <li class="nav-group {{ request()->routeIs('sales.*') ? 'open' : '' }}">
 
                 <button type="button" class="nav-group-toggle">
 
@@ -83,7 +83,8 @@
                 <ul class="nav-submenu">
 
                     <li>
-                        <a href="{{ route('sales.create') }}">
+                        <a href="{{ route('sales.create') }}"
+                        class={{ request()->routeIs('sales.create') ? 'active' : '' }}>
                             <span class="nav-icon">
                                 <i class="ti ti-plus"></i>
                             </span>
@@ -92,7 +93,9 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('sales.index') }}">
+                        <a href="{{ route('sales.index') }}"
+                        class="{{ request()->routeIs('sales.index','sales.invoice','sales.return')
+                        ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-history"></i>
                             </span>
@@ -106,7 +109,10 @@
 
 
             {{-- PURCHASE --}}
-            <li class="nav-group">
+            <li class="nav-group {{ request()->routeIs('purchase.*', 
+            'purchases.*', 
+            'createPurchase',
+            'supplier.*') ? 'open' : '' }}">
 
                 <button type="button" class="nav-group-toggle">
 
@@ -126,7 +132,9 @@
                 <ul class="nav-submenu">
 
                     <li>
-                        <a href="{{ route('purchases.index') }}">
+                        <a href="{{ route('purchases.index') }}"
+                        class="{{ request()->routeIs('purchases.*', 'createPurchase')
+                        ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-backpack"></i>
                             </span>
@@ -135,7 +143,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('supplier.index') }}">
+                        <a href="{{ route('supplier.index') }}"
+                        class="{{ request()->routeIs('supplier.*') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-truck-delivery"></i>
                             </span>
@@ -149,7 +158,13 @@
 
 
             {{-- INVENTORY --}}
-            <li class="nav-group">
+           
+            <li class="nav-group {{ request()->routeIs('product.*',
+            'products.*',
+            'singleProduct',
+            'categories.*',
+            'stock.*',
+            'stockMovements') ? 'open' : '' }}">
 
                 <button type="button" class="nav-group-toggle">
 
@@ -169,7 +184,8 @@
                 <ul class="nav-submenu">
 
                     <li>
-                        <a href="{{ route('products.index') }}">
+                        <a href="{{ route('products.index') }}"
+                        class="{{ request()->routeIs('products.index') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-package"></i>
                             </span>
@@ -178,7 +194,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('categories.index') }}">
+                        <a href="{{ route('categories.index') }}"
+                        class="{{ request()->routeIs('categories.index') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-category"></i>
                             </span>
@@ -187,7 +204,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('stock.index') }}">
+                        <a href="{{ route('stock.index') }}"
+                        class="{{ request()->routeIs('stock.index') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-augmented-reality"></i>
                             </span>
@@ -196,7 +214,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('stockMovements') }}">
+                        <a href="{{ route('stockMovements') }}"
+                        class="{{ request()->routeIs('stockMovements') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-arrows-transfer-up-down"></i>
                             </span>
@@ -210,7 +229,7 @@
 
 
             {{-- REPORTS --}}
-            <li class="nav-group">
+            <li class="nav-group {{ request()->routeIs('reports.*') ? 'open' : '' }}">
 
                 <button type="button" class="nav-group-toggle">
 
@@ -230,7 +249,8 @@
                 <ul class="nav-submenu">
 
                     <li>
-                        <a href="{{ route('reports.sales') }}">
+                        <a href="{{ route('reports.sales') }}"
+                        class="{{ request()->routeIs('reports.sales') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-report-analytics"></i>
                             </span>
@@ -239,7 +259,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('reports.product-sales') }}">
+                        <a href="{{ route('reports.product-sales') }}"
+                        class="{{ request()->routeIs('reports.product-sales') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-packages"></i>
                             </span>
@@ -248,7 +269,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('reports.profit') }}">
+                        <a href="{{ route('reports.profit') }}"
+                        class="{{ request()->routeIs('reports.profit') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-arrow-big-up-line"></i>
                             </span>
@@ -257,7 +279,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('reports.purchase') }}">
+                        <a href="{{ route('reports.purchase') }}"
+                        class="{{ request()->routeIs('reports.purchase') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-basket-check"></i>
                             </span>
@@ -271,7 +294,7 @@
 
 
             {{-- SYSTEM --}}
-            <li class="nav-group">
+            <li class="nav-group {{ request()->routeIs('settings.*', 'profile.*') ? 'open' : '' }}">
                 <button type="button" class="nav-group-toggle"
                 >
 
@@ -293,6 +316,8 @@
 
                     <li>
                         <a href="{{ route('settings.index') }}"
+
+                        class="{{ request()->routeIs('settings.index') ? 'active' : '' }}"
                         >
                             <span class="nav-icon">
                                 <i class="ti ti-settings-spark"></i>
@@ -302,7 +327,8 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('profile.index') }}">
+                        <a href="{{ route('profile.index') }}"
+                        class="{{ request()->routeIs('profile.index') ? 'active' : '' }}">
                             <span class="nav-icon">
                                 <i class="ti ti-user-circle"></i>   
                             </span>
@@ -315,24 +341,24 @@
             </li>
 
             <li class="nav-group">
-                <button class="nav-group-toggle" type="button">
+                   
 
-                <span class="nav-group-left">
-                    <span class="nav-icon">
-                        <i class="ti ti-logout-2"></i>
-                    </span>
-
-                    <span class="nav-text">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
+                        
+                            <button type="submit" class="nav-group-toggle">
+                                <div class="nav-group-left">
+                                     <span class="nav-icon">
+                                      <i class="ti ti-logout-2"></i>
+                                     </span>
 
-                            <button type="submit">
-                                Logout
+                                     <span class="nav-text">
+                                    Logout</span>
+                                </div>
+                               
+                                
                             </button>
                         </form>
-                    </span>
-                </span>
-                </button>
                 
             </li>
 

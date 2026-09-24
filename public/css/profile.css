@@ -77,3 +77,21 @@
             font-size: 24px;
         }
     }
+
+    .danger-zone {
+    margin-top: 25px;
+    border: 1px solid #fecaca;
+}
+
+.danger-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #b91c1c;
+    margin-bottom: 8px;
+}
+
+.danger-text {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 18px;
+}

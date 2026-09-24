@@ -163,6 +163,148 @@
 
     </div>
 
+    <div class="profile-card danger-zone">
+
+        <div class="danger-title">
+            Delete Account
+        </div>
+
+        <p class="danger-text">
+            Permanently delete your StockMan account, firm and all associated data.
+            This action cannot be undone.
+        </p>
+
+        <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteAccountModal"
+        >
+            Delete Account
+        </button>
+
+    </div>
+
+    <div
+    class="modal fade"
+    id="deleteAccountModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Delete Account
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="alert alert-danger">
+                    <strong>Warning!</strong>
+
+                    <p class="mb-0 mt-2">
+                        This will permanently delete your StockMan account,
+                        firm information, products, sales, purchases,
+                        stock records and other associated data.
+                    </p>
+                </div>
+
+                <p>
+                    Enter your current password to confirm this action.
+                </p>
+
+                <form
+                    action="{{ route('profile.destroy') }}"
+                    method="POST"
+                    id="deleteAccountForm"
+                >
+
+                    @csrf
+                    @method('DELETE')
+
+                    <div class="mb-3">
+
+                        <label
+                            for="delete_current_password"
+                            class="form-label"
+                        >
+                            Current Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="current_password"
+                            id="delete_current_password"
+                            class="form-control"
+                            required
+                        >
+
+                        @error('delete_password')
+                            <div class="text-danger small mt-2">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                        @error('delete_account')
+                            <div class="text-danger small mt-2">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    form="deleteAccountForm"
+                    class="btn btn-danger"
+                >
+                    Yes, Delete Everything
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
 </div>
+
+@if($errors->has('delete_password') || $errors->has('delete_account'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
+
+            deleteModal.show();
+        })
+    </script>
+@endif
 
 @endsection
