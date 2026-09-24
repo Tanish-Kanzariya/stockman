@@ -79,9 +79,9 @@
 
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
                 <i class="fa-solid fa-receipt"></i>
-            </div>
+            </div> --}}
 
             <div>
                 <span>Total Transactions</span>
@@ -93,9 +93,9 @@
 
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
                 <i class="fa-solid fa-indian-rupee-sign"></i>
-            </div>
+            </div> --}}
 
             <div>
                 <span>Total Revenue</span>
@@ -107,9 +107,9 @@
 
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
                 <i class="fa-solid fa-tag"></i>
-            </div>
+            </div> --}}
 
             <div>
                 <span>Total Discount</span>
@@ -121,9 +121,9 @@
 
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
                 <i class="fa-solid fa-percent"></i>
-            </div>
+            </div> --}}
 
             <div>
                 <span>Total Tax</span>

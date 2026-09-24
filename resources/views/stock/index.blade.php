@@ -23,9 +23,9 @@
     {{-- Total Stocks --}}
     <div class="col-12 col-md-6">
         <div class="stock-summary-card">
-            <div class="stock-card-icon">
+            {{-- <div class="stock-card-icon">
                 📦
-            </div>
+            </div> --}}
             <div class="stock-card-content">
                 <p>Total Stock</p>
                 <h2>{{ number_format($totalStock) }}</h2>
@@ -37,9 +37,9 @@
 
     <div class="col-12 col-md-6">
         <div class="stock-summary-card">
-            <div class="stock-card-icon">
+            {{-- <div class="stock-card-icon">
                 ₹
-            </div>
+            </div> --}}
             <div class="stock-card-content">
                 <p>Inventory Value</p>
                 <h2>₹{{ number_format($totalInventoryValue, 2) }}</h2>

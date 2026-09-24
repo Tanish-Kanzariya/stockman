@@ -98,11 +98,11 @@
         {{-- Products --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-box"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -120,11 +120,11 @@
         {{-- Quantity --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-cubes"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -142,11 +142,11 @@
         {{-- Revenue --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-indian-rupee-sign"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -164,11 +164,11 @@
         {{-- Average --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-chart-line"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 

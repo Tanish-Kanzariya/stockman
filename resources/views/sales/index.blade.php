@@ -23,9 +23,9 @@
         {{-- Total sales --}}
         <div class="col-12 col-xl-3 col-md-6">
             <div class="sales-stat-card">
-                <div class="sales-stat-icon">
+                {{-- <div class="sales-stat-icon">
                     🧾
-                </div>
+                </div> --}}
 
                 <div>
                     <span>Total Sales</span>
@@ -41,9 +41,9 @@
         {{-- Total Revenue --}}
         <div class="col-12 col-xl-3 col-md-6">
             <div class="sales-stat-card">
-                <div class="sales-stat-icon">
+                {{-- <div class="sales-stat-icon">
                     💰
-                </div>
+                </div> --}}
                 <div>
                     <span>Total Revenue</span>
                     <h4>
@@ -60,9 +60,9 @@
         {{-- Todays sale --}}
         <div class="col-12 col-xl-3 col-md-6">
             <div class="sales-stat-card">
-                <div class="sales-stat-icon">
+                {{-- <div class="sales-stat-icon">
                     📅
-                </div>
+                </div> --}}
 
                 <div>
                     <span>Today's sales</span>
@@ -78,9 +78,9 @@
         {{-- Cancelled Sales --}}
         <div class="col-12 col-md-6 col-xl-3">
             <div class="sales-stat-card">
-                <div class="sales-stat-icon">
+                {{-- <div class="sales-stat-icon">
                     ❌
-                </div>
+                </div> --}}
 
                 <div>
                     <span>Cancelled Sales</span>

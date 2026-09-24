@@ -1,6 +1,4 @@
-/* =========================
-   SALE PAGE
-========================= */
+   /* SALE PAGE */
 
 .sale-page {
     padding-top: 20px;
@@ -8,9 +6,7 @@
 }
 
 
-/* =========================
-   PAGE HEADER
-========================= */
+   /* PAGE HEADER */
 
 .page-header {
     display: flex;
@@ -31,9 +27,7 @@
 }
 
 
-/* =========================
-   CARDS
-========================= */
+   /* CARDS */
 
 .sale-card {
     background: #ffffff;
@@ -73,9 +67,7 @@
 }
 
 
-/* =========================
-   PRODUCT SEARCH
-========================= */
+   /* PRODUCT SEARCH */
 
 .product-search-box {
     position: relative;
@@ -87,9 +79,7 @@
 }
 
 
-/* =========================
-   SALE TABLE
-========================= */
+   /* SALE TABLE */
 
 .sale-items-table {
     margin-bottom: 0;
@@ -115,9 +105,7 @@
 }
 
 
-/* =========================
-   SUMMARY
-========================= */
+   /* SUMMARY */
 
 .sale-summary-card {
     position: sticky;
@@ -164,9 +152,7 @@
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+   /* MOBILE */
 
 @media (max-width: 991px) {
 
@@ -205,9 +191,7 @@
 
 }
 
-/* ========================================
-   PRODUCT SEARCH DROPDOWN
-======================================== */
+   /* PRODUCT SEARCH DROPDOWN */
 
 .product-search-wrapper {
     position: relative;
@@ -655,9 +639,7 @@
 }
 
 
-/* =========================================
-   SALES ACTIONS
-========================================= */
+   /* SALES ACTIONS */
 
 .sales-actions {
     
@@ -671,9 +653,7 @@
 }
 
 
-/* =========================================
-   PAGINATION
-========================================= */
+   /* PAGINATION */
 
 .sales-pagination {
     padding: 20px 22px;
@@ -682,9 +662,7 @@
 }
 
 
-/* =========================================
-   RESPONSIVE
-========================================= */
+   /* RESPONSIVE */
 
 @media (max-width: 991px) {
 

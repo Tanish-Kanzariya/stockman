@@ -97,11 +97,11 @@
         {{-- Revenue --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-indian-rupee-sign"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -117,11 +117,11 @@
 
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-rotate-left"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -139,11 +139,11 @@
         {{-- Cost --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-box"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -161,11 +161,11 @@
         {{-- Profit --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-chart-line"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -183,11 +183,11 @@
         {{-- Margin --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-percent"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 

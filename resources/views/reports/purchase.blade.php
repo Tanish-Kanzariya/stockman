@@ -98,11 +98,11 @@
         {{-- Total Purchases --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-cart-shopping"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -120,11 +120,11 @@
         {{-- Total Spending --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-indian-rupee-sign"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -142,11 +142,11 @@
         {{-- Average Purchase --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-chart-line"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 
@@ -170,11 +170,11 @@
         {{-- Suppliers --}}
         <div class="report-summary-card">
 
-            <div class="summary-icon">
+            {{-- <div class="summary-icon">
 
                 <i class="fa-solid fa-truck"></i>
 
-            </div>
+            </div> --}}
 
             <div>
 

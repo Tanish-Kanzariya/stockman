@@ -14,22 +14,21 @@
         <div class="invoice-header">
 
             <div class="company-section">
+                    <div class="company-logo">
+                        <img src="{{ asset('storage/'.Auth::user()->firm->logo) }}" alt="Logo">
+                    </div>
 
-                {{-- <div class="company-logo">
-                    SM
-                </div> --}}
+                    <div>
+                        <h1>{{ $sale->firm->name }}</h1>
+                        {{-- <p>Smart Stock Management System</p> --}}
 
-                <div>
-                    <h1>{{ $sale->firm->name }}</h1>
-                    {{-- <p>Smart Stock Management System</p> --}}
+                        @if($sale->firm && $sale->firm->gstin)
+                        <p class="company-gstin">
+                            GSTIN: {{ $sale->firm->gstin }}
+                        </p>
+                        @endif  
+                    </div>
 
-                    @if($sale->firm && $sale->firm->gstin)
-                    <p class="company-gstin">
-                        GSTIN: {{ $sale->firm->gstin }}
-                    </p>
-                    @endif  
-                </div>
-                
             </div>
 
 
