@@ -163,6 +163,8 @@ class SaleController extends Controller
 
             foreach($validated['items'] as $item){
                 $product = Product::where('firm_id', Auth::user()->firm_id)
+                ->where('id', $item['product_id'])
+                ->lockForUpdate()
                 ->findOrFail($item['product_id']);
 
                 $quantity = $item['quantity'];
@@ -300,9 +302,24 @@ class SaleController extends Controller
             $sale->load('sale_items.product');
 
             foreach($sale->sale_items as $item){
-                $product = $item->product;
+                
 
-                $product->increment('stock_quantity', $item->quantity);
+                $returnedQuantity = Sale_return_item::where(
+                    'sale_item_id', $item->id
+                )->sum('quantity');
+
+                $remainingQuantity = $item->quantity - $returnedQuantity;
+
+                if($remainingQuantity <= 0){
+                    continue;
+                }
+
+                $product = Product::where('firm_id', Auth::user()->firm_id)
+                ->where('id', $item->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+                $product->increment('stock_quantity', $remainingQuantity);
 
                 StockMovement::create([
                     'product_id' => $product->id,
@@ -379,7 +396,10 @@ class SaleController extends Controller
             $refundAmount = 0;
 
             foreach($validated['items'] as $item){
-                $saleItem = Sale_item::findOrFail($item['sale_item_id']);
+                $saleItem = Sale_item::where('id', $item['sale_item_id'])
+                ->where('sale_id', $sale->id)
+                ->lockForUpdate()
+                ->findOrFail($item['sale_item_id']);
 
                 if($saleItem->sale_id !== $sale->id){
                     return response()->json([

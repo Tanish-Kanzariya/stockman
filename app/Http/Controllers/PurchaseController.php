@@ -214,7 +214,9 @@ class PurchaseController extends Controller
 
 
                 $product = Product::where('firm_id', Auth::user()->firm_id)
-                ->findOrFail($product_id);
+                ->where('id', $item['product_id'])
+                ->lockForUpdate()
+                ->firstOrFail();
 
                 $previousPrice = $product->purchase_price;
 

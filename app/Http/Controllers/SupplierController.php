@@ -73,8 +73,8 @@ class SupplierController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'phone' => 'required|digits:10',
-            'email' => 'nullable',
-            'address' => 'nullable'
+            'email' => 'nullable|email',
+            'address' => 'nullable|string'
         ]);
 
         $validated['firm_id'] = Auth::user()->firm_id;

@@ -16,6 +16,8 @@ use App\Http\Controllers\SaleController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
+
+
 Route::get('/',[DashBoardController::class, 'index'])
 ->middleware('auth')
 ->name('dashboard');
