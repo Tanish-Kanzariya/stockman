@@ -8,7 +8,8 @@
 
 <div class="container-fluid invoice-page">
 
-    <div class="invoice-wrapper" id="invoice">
+    <div class="invoice-wrapper" id="invoice" 
+    data-invoice-number="{{ $sale->invoice_number }}">
 
         {{-- Invoice Header --}}
         <div class="invoice-header">
@@ -307,115 +308,5 @@
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-    
-    document.getElementById('printInvoiceBtn').addEventListener('click', ()=>{
-        window.print();
-    })
-
-    //PDF code
-    const invoiceNumber = "{{ $sale->invoice_number }}"
-    document.getElementById('downloadPdfBtn').addEventListener('click',()=>{
-        const invoice = document.getElementById('invoice');
-
-        const options = {
-            margin :10,
-
-            filename: invoiceNumber + '.pdf',
-
-            image:{
-                type: 'jpeg',
-                quality: 0.98
-            },
-
-            html2canvas:{
-                scale:2
-            },
-            
-            jsPDF: {
-                unit: 'mm',
-
-                format: 'a4',
-
-                orientation: 'portrait'
-            }
-        };
-
-        html2pdf()
-            .set(options)
-            .from(invoice)
-            .save();
-    });
-
-    //Watsapp sharing code
-
-    document.getElementById('shareWatsappBtn').addEventListener('click', async function(){
-        const invoice = document.getElementById('invoice');
-
-        const invoiceNumber = '{{ $sale->invoice_number }}';
-
-        const options = {
-            margin : 5,
-
-            image:{
-                type: 'jpeg',
-                quality: 0.98
-            },
-
-            html2canvas:{
-                scale:2,
-                useCORS: true
-            },
-
-            jsPDF:{
-                unit: 'mm',
-                format: 'a4',
-                orientation:'portrait'
-            }
-        };
-
-        try{
-            
-            //Generate PDF as Blob
-            const pdfBlob = await html2pdf()
-                .set(options)
-                .from(invoice)
-                .outputPdf('blob');
-
-            //Create actual PDF file
-            const pdfFile = new File(
-                [pdfBlob],
-                invoiceNumber + '.pdf',
-
-                {
-                    type: 'application/pdf'
-                }
-            );
-
-            //Checking if file is supported
-            if(
-                navigator.share &&
-                navigator.canShare &&
-                navigator.canShare({files: [pdfFile]})
-            ){
-                await navigator.share({
-                    title: 'Sale Invoice',
-
-                    text: 'Invoice ' + invoiceNumber,
-
-                    files: [pdfFile]
-                });
-            }else{
-                alert('File sharing is not supported on this browser. Please download the PDF and share it manually');
-
-            }
-        }catch(error){
-            //User may cancel the share dialog
-            if(error.name !== 'AbortError'){
-                console.error('Share error:', error);
-                alert('Unable to share invoice');
-            }
-        }
-    });
-</script>
+<script src="{{ asset('js/sales-invoice.js') }}"></script>
 @endsection

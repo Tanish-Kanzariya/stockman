@@ -449,50 +449,23 @@
     
    </div>   {{-- Layout over --}}
 
-   <script>
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const sidebarClose = document.getElementById('sidebarClose');
-    const navGroupToggle = document.querySelectorAll('.nav-group-toggle');
 
+   <!-- StockMan Preloader -->
+    <div id="stockman-preloader">
+        <div class="stockman-loader">
 
-    const desktopSidebarToggle = document.getElementById('desktopSidebarToggle')
+            <div class="stockman-loader-ring">
+                <div class="stockman-loader-progress"></div>
+            </div>
 
-    sidebarToggle.addEventListener('click',()=>{
-        sidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-    });
+            <div class="stockman-loader-logo">
+                <span>Stock</span><strong>Man</strong>
+            </div>
 
-    sidebarClose.addEventListener('click', ()=>{
-        sidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-    });
-
-    sidebarOverlay.addEventListener('click', ()=>{
-        sidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-    });
-
-    desktopSidebarToggle.addEventListener('click', ()=>{
-        sidebar.classList.toggle('collapsed');
-    });
-
-    navGroupToggle.forEach(toggle => {
-        toggle.addEventListener('click', ()=>{
-            const currentGroup = toggle.closest('.nav-group');
-
-            document.querySelectorAll('.nav-group').forEach(group=>{
-                if(group !== currentGroup){
-                    group.classList.remove('open');
-                }
-            })
-
-            currentGroup.classList.toggle('open');
-        });
-    });
-
-   </script>
+        </div>
+    </div>
+<!-- End StockMan Preloader -->
+    <script src="{{ asset('js/app.js') }}"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
