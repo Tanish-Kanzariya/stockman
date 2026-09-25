@@ -455,7 +455,6 @@
         <div class="stockman-loader">
 
             <div class="stockman-loader-ring">
-                <div class="stockman-loader-progress"></div>
             </div>
 
             <div class="stockman-loader-logo">
