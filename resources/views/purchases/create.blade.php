@@ -14,7 +14,8 @@
             </p>
         </div>
 
-        <a href="{{ route('purchases.index') }}" class="btn btn-outline-secondary"><- Back to purchase</a>
+        <a href="{{ route('purchases.index') }}" class="btn btn-outline-secondary">
+            <i class="ti ti-arrow-big-left-line"></i> Back</a>
     </div>
     <form action="{{ route('purchase.store') }}" method="POST" id="purchaseForm">
     @csrf

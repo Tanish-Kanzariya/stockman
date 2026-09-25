@@ -32,7 +32,7 @@
             </div>
 
             <a href="{{ route('supplier.index') }}" class="btn btn-outline-secondary">
-                <- Back to suppliers
+                <i class="ti ti-arrow-big-left-line"></i> Back
             </a>
         </div>
 

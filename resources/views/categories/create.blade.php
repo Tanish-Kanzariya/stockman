@@ -13,8 +13,8 @@
         </div>
 
         <a href="{{ route('categories.index') }}"
-        class="btn btn-primary">
-            <- Back to Categories
+        class="btn btn-outline-secondary">
+            <i class="ti ti-arrow-big-left-line"></i> Back
         </a>
     </div>
 

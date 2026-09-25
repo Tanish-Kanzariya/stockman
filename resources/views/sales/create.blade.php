@@ -15,7 +15,7 @@
         </div>
 
         <a href="{{ route('sales.index') }}" class="btn btn-outline-secondary">
-            <- Back to sales
+            <i class="ti ti-arrow-big-left-line"></i> Back
         </a>
     </div>
 

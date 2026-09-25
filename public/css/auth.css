@@ -143,6 +143,10 @@ body {
     text-decoration: none;
 }
 
+.remember-row{
+    margin-bottom:10px;
+}
+
 @media (max-width: 500px) {
 
     .register-card {
